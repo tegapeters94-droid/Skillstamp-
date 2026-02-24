@@ -1,0 +1,1989 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SkillStamp — Verified African Digital Talent</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+:root{
+  --bg:#070706;--s:#0e0e0c;--s2:#161613;--s3:#1e1e1a;--br:#252521;
+  --gld:#e8c547;--gdm:#b89d38;--grn:#4ade80;--tx:#f0ede6;
+  --td:#6e6e66;--acc:#ff6b35;--blu:#60a5fa;--pur:#a78bfa;--r:8px;
+  --pink:#f472b6;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'DM Mono',monospace;background:var(--bg);color:var(--tx);min-height:100vh;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:9998;opacity:.3;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.05'/%3E%3C/svg%3E");}
+
+.screen{display:none;}
+.screen.active{display:block;animation:fu .35s ease;}
+#screen-login.active{display:flex;min-height:100vh;}
+@keyframes fu{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes slideIn{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:none}}
+@keyframes popIn{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:scale(1)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+@keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+
+/* ─── LOGIN ─── */
+.ll{flex:1;background:linear-gradient(145deg,#08080a,#12120e,#0a0a0c);display:flex;flex-direction:column;justify-content:center;padding:64px;position:relative;overflow:hidden;border-right:1px solid var(--br);}
+.ll::before{content:'';position:absolute;width:800px;height:800px;border-radius:50%;background:radial-gradient(circle,rgba(232,197,71,.06) 0%,transparent 60%);top:-250px;right:-250px;pointer-events:none;}
+.ll::after{content:'';position:absolute;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(255,107,53,.04) 0%,transparent 60%);bottom:-200px;left:-200px;pointer-events:none;}
+.ll-brand{font-family:'Syne',sans-serif;font-weight:800;font-size:28px;margin-bottom:52px;position:relative;z-index:1;letter-spacing:-.5px;}
+.ll-brand span{color:var(--gld);}
+.ll-h{font-family:'Syne',sans-serif;font-size:clamp(32px,4vw,54px);font-weight:800;line-height:.93;letter-spacing:-2px;margin-bottom:16px;position:relative;z-index:1;}
+.ll-h em{font-family:'Instrument Serif',serif;font-style:italic;color:var(--gld);font-weight:400;}
+.ll-sub{font-size:13px;color:var(--td);line-height:1.8;max-width:380px;margin-bottom:44px;position:relative;z-index:1;}
+.tpills{display:flex;flex-direction:column;gap:9px;position:relative;z-index:1;}
+.tp{display:flex;align-items:center;gap:14px;background:rgba(255,255,255,.018);border:1px solid var(--br);padding:12px 15px;border-radius:var(--r);}
+.tp-icon{font-size:20px;flex-shrink:0;}
+.tp strong{display:block;font-family:'Syne',sans-serif;font-size:12px;color:var(--tx);margin-bottom:1px;}
+.tp span{font-size:10px;color:var(--td);}
+.ll-credit{position:absolute;bottom:24px;left:64px;font-size:11px;color:var(--td);z-index:1;display:flex;align-items:center;gap:8px;}
+.ll-credit span{color:var(--gld);font-family:'Syne',sans-serif;font-weight:700;}
+.ll-credit::before{content:'';width:20px;height:1px;background:var(--br);}
+.lr{width:460px;flex-shrink:0;display:flex;flex-direction:column;justify-content:center;padding:52px 44px;background:var(--bg);}
+.atabs{display:flex;gap:4px;margin-bottom:26px;background:var(--s);border-radius:6px;padding:4px;}
+.atab{flex:1;padding:9px;text-align:center;background:none;border:none;color:var(--td);font-family:'Syne',sans-serif;font-size:11px;font-weight:600;cursor:pointer;border-radius:4px;transition:all .2s;}
+.atab.active{background:var(--s2);color:var(--tx);border:1px solid var(--br);}
+.ah{font-family:'Syne',sans-serif;font-size:21px;font-weight:800;margin-bottom:3px;}
+.as{font-size:11px;color:var(--td);margin-bottom:20px;}
+.fg{margin-bottom:12px;}
+.fl{display:block;font-size:10px;color:var(--td);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px;}
+.fi{width:100%;background:var(--s);border:1px solid var(--br);color:var(--tx);font-family:'DM Mono',monospace;font-size:12px;padding:10px 13px;border-radius:var(--r);outline:none;transition:border-color .2s;}
+.fi:focus{border-color:var(--gld);}
+.fi::placeholder{color:var(--td);}
+.fi option{background:var(--s);}
+.role-g{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:12px;}
+.rc{padding:11px;background:var(--s);border:1px solid var(--br);border-radius:var(--r);cursor:pointer;transition:all .2s;text-align:center;}
+.rc.sel,.rc:hover{border-color:var(--gld);background:rgba(232,197,71,.04);}
+.rc .ri{font-size:18px;margin-bottom:4px;}
+.rc .rl{font-family:'Syne',sans-serif;font-size:11px;font-weight:700;}
+.rc .rs{font-size:9px;color:var(--td);margin-top:1px;}
+.aerr{color:var(--acc);font-size:10px;margin-top:4px;display:none;}
+.save-login{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--td);margin-bottom:12px;cursor:pointer;}
+.save-login input{accent-color:var(--gld);}
+
+/* ─── BUTTONS ─── */
+.btn{background:var(--gld);color:#000;border:none;padding:12px 22px;font-family:'Syne',sans-serif;font-weight:700;font-size:12px;border-radius:var(--r);cursor:pointer;letter-spacing:.05em;transition:all .2s;width:100%;}
+.btn:hover:not(:disabled){background:#f5d460;transform:translateY(-1px);box-shadow:0 4px 20px rgba(232,197,71,.25);}
+.btn:disabled{opacity:.4;cursor:not-allowed;}
+.btn2{background:none;color:var(--tx);border:1px solid var(--br);padding:12px 22px;font-family:'Syne',sans-serif;font-weight:600;font-size:12px;border-radius:var(--r);cursor:pointer;transition:all .2s;width:100%;}
+.btn2:hover{border-color:var(--gld);color:var(--gld);}
+.bsm{background:var(--gld);color:#000;border:none;padding:6px 13px;font-family:'Syne',sans-serif;font-weight:700;font-size:10px;border-radius:6px;cursor:pointer;transition:all .2s;white-space:nowrap;}
+.bsm:hover{background:#f5d460;}
+.b2sm{background:none;color:var(--tx);border:1px solid var(--br);padding:6px 13px;font-family:'Syne',sans-serif;font-weight:600;font-size:10px;border-radius:6px;cursor:pointer;transition:all .2s;white-space:nowrap;}
+.b2sm:hover{border-color:var(--gld);color:var(--gld);}
+.bgrn{background:rgba(74,222,128,.12);color:var(--grn);border:1px solid rgba(74,222,128,.25);padding:6px 13px;font-family:'Syne',sans-serif;font-weight:700;font-size:10px;border-radius:6px;cursor:pointer;transition:all .2s;}
+.bgrn:hover{background:rgba(74,222,128,.22);}
+.bacc{background:rgba(255,107,53,.12);color:var(--acc);border:1px solid rgba(255,107,53,.25);padding:6px 13px;font-family:'Syne',sans-serif;font-weight:700;font-size:10px;border-radius:6px;cursor:pointer;}
+.bblu{background:rgba(96,165,250,.12);color:var(--blu);border:1px solid rgba(96,165,250,.25);padding:6px 13px;font-family:'Syne',sans-serif;font-weight:700;font-size:10px;border-radius:6px;cursor:pointer;transition:all .2s;}
+.bblu:hover{background:rgba(96,165,250,.22);}
+
+/* ─── NAV ─── */
+nav{display:flex;align-items:center;justify-content:space-between;padding:12px 40px;border-bottom:1px solid var(--br);position:sticky;top:0;background:rgba(7,7,6,.97);backdrop-filter:blur(20px);z-index:200;}
+.logo{font-family:'Syne',sans-serif;font-weight:800;font-size:21px;letter-spacing:-.5px;cursor:pointer;flex-shrink:0;}
+.logo span{color:var(--gld);}
+.ntabs{display:flex;gap:2px;}
+.nt{background:none;border:1px solid transparent;color:var(--td);font-family:'DM Mono',monospace;font-size:10px;padding:6px 12px;cursor:pointer;border-radius:4px;transition:all .2s;letter-spacing:.04em;text-transform:uppercase;position:relative;white-space:nowrap;}
+.nt:hover{color:var(--tx);border-color:var(--br);}
+.nt.active{color:var(--gld);border-color:var(--gld);background:rgba(232,197,71,.07);}
+.nbadge{background:var(--acc);color:#fff;font-size:7px;font-weight:700;padding:1px 4px;border-radius:8px;position:absolute;top:2px;right:2px;font-family:'Syne',sans-serif;display:none;}
+.nuser{display:flex;align-items:center;gap:8px;}
+.nav-av{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:11px;color:#000;cursor:pointer;flex-shrink:0;border:2px solid transparent;transition:all .2s;overflow:hidden;}
+.nav-av:hover{border-color:var(--gld);}
+.nav-av img{width:100%;height:100%;object-fit:cover;}
+
+/* ─── PAGES ─── */
+.page{display:none;animation:fu .3s ease;}
+.page.active{display:block;}
+.section{padding:40px 44px;}
+.sh{display:flex;align-items:center;gap:12px;margin-bottom:22px;flex-wrap:wrap;}
+.st{font-family:'Syne',sans-serif;font-size:17px;font-weight:700;}
+.sc{font-size:10px;color:var(--td);}
+
+/* ─── CARDS ─── */
+.card{background:var(--s);border:1px solid var(--br);border-radius:var(--r);padding:20px;position:relative;overflow:hidden;transition:border-color .25s,transform .2s;}
+.card:hover{border-color:rgba(232,197,71,.3);}
+.card-accent::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--gld),var(--acc));}
+
+/* ─── COMMON ─── */
+.chip{background:var(--s2);border:1px solid var(--br);padding:3px 8px;border-radius:4px;font-size:10px;color:var(--td);}
+.chip.v{border-color:rgba(232,197,71,.4);color:var(--gld);background:rgba(232,197,71,.05);}
+.chips{display:flex;flex-wrap:wrap;gap:5px;}
+.vbadge{display:inline-flex;align-items:center;gap:4px;background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.28);color:var(--grn);font-size:9px;padding:3px 7px;border-radius:20px;letter-spacing:.04em;}
+.chain{display:flex;align-items:center;gap:7px;padding:7px 11px;background:rgba(96,165,250,.04);border:1px solid rgba(96,165,250,.18);border-radius:5px;}
+.cdot{width:5px;height:5px;border-radius:50%;background:var(--blu);animation:pulse 1.5s infinite;flex-shrink:0;}
+.chash{font-size:9px;color:var(--blu);letter-spacing:.04em;}
+.spin-el{width:16px;height:16px;border:2px solid var(--br);border-top-color:var(--gld);border-radius:50%;animation:spin .7s linear infinite;}
+.empty{text-align:center;padding:40px;color:var(--td);font-size:12px;}
+
+/* ─── BADGE ─── */
+.badge{display:inline-flex;align-items:center;gap:4px;font-size:9px;font-weight:700;padding:3px 8px;border-radius:20px;letter-spacing:.04em;font-family:'Syne',sans-serif;}
+.badge.verified{background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.3);color:var(--grn);}
+.badge.review{background:rgba(96,165,250,.1);border:1px solid rgba(96,165,250,.3);color:var(--blu);}
+.badge.beginner{background:rgba(232,197,71,.1);border:1px solid rgba(232,197,71,.3);color:var(--gld);}
+.badge.suspended{background:rgba(255,107,53,.1);border:1px solid rgba(255,107,53,.3);color:var(--acc);}
+.badge.expert{background:rgba(167,139,250,.1);border:1px solid rgba(167,139,250,.3);color:var(--pur);}
+
+/* ─── AVATAR ─── */
+.av{display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;color:#000;overflow:hidden;flex-shrink:0;}
+.av img{width:100%;height:100%;object-fit:cover;}
+
+/* ─── HERO ─── */
+.hero{padding:64px 44px 44px;position:relative;overflow:hidden;}
+.hero::after{content:'STAMP';position:absolute;right:-20px;top:0;font-family:'Syne',sans-serif;font-size:220px;font-weight:800;color:var(--gld);opacity:.022;line-height:1;pointer-events:none;user-select:none;}
+.htag{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--br);padding:4px 12px;border-radius:20px;font-size:9px;color:var(--td);margin-bottom:22px;letter-spacing:.08em;}
+.htag::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--grn);animation:pulse 2s infinite;}
+h1{font-family:'Syne',sans-serif;font-size:clamp(36px,6vw,68px);font-weight:800;line-height:.93;letter-spacing:-2.5px;margin-bottom:16px;max-width:700px;}
+h1 em{font-family:'Instrument Serif',serif;font-style:italic;color:var(--gld);font-weight:400;}
+.hsub{font-size:13px;color:var(--td);max-width:480px;line-height:1.8;margin-bottom:28px;}
+.stats-row{display:grid;grid-template-columns:repeat(5,1fr);border-top:1px solid var(--br);border-bottom:1px solid var(--br);margin-bottom:44px;}
+.si{padding:22px 44px;border-right:1px solid var(--br);}
+.si:last-child{border-right:none;}
+.sn{font-family:'Syne',sans-serif;font-size:30px;font-weight:800;color:var(--gld);display:block;margin-bottom:2px;}
+.sl{font-size:9px;color:var(--td);text-transform:uppercase;letter-spacing:.1em;}
+
+/* ─── TIMELINE ─── */
+.timeline{max-width:680px;margin:0 auto;}
+.post-composer{background:var(--s);border:1px solid var(--br);border-radius:var(--r);padding:18px;margin-bottom:16px;position:relative;}
+.post-composer::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--gld),var(--acc));border-radius:var(--r) var(--r) 0 0;}
+.composer-row{display:flex;gap:12px;align-items:flex-start;}
+.post-ta{flex:1;background:var(--s2);border:1px solid var(--br);color:var(--tx);font-family:'DM Mono',monospace;font-size:12px;padding:12px;border-radius:var(--r);outline:none;resize:none;transition:border-color .2s;min-height:80px;}
+.post-ta:focus{border-color:var(--gld);}
+.post-ta::placeholder{color:var(--td);}
+.composer-actions{display:flex;justify-content:space-between;align-items:center;margin-top:10px;}
+.post-type-pills{display:flex;gap:6px;}
+.ptype{padding:4px 10px;background:var(--s2);border:1px solid var(--br);border-radius:12px;font-size:9px;cursor:pointer;transition:all .15s;color:var(--td);}
+.ptype.active,.ptype:hover{border-color:var(--gld);color:var(--gld);}
+
+.post{background:var(--s);border:1px solid var(--br);border-radius:var(--r);padding:18px;margin-bottom:12px;animation:slideIn .3s ease;transition:border-color .2s;}
+.post:hover{border-color:rgba(232,197,71,.2);}
+.post-header{display:flex;gap:11px;align-items:flex-start;margin-bottom:12px;}
+.post-av{width:40px;height:40px;border-radius:50%;flex-shrink:0;cursor:pointer;}
+.post-meta{flex:1;}
+.post-name{font-family:'Syne',sans-serif;font-weight:700;font-size:13px;cursor:pointer;}
+.post-name:hover{color:var(--gld);}
+.post-sub{font-size:10px;color:var(--td);}
+.post-content{font-size:12px;line-height:1.75;color:var(--tx);margin-bottom:14px;white-space:pre-wrap;}
+.post-content a{color:var(--gld);}
+.post-tag{display:inline-block;font-size:9px;color:var(--blu);margin-right:6px;cursor:pointer;}
+.post-img{width:100%;border-radius:6px;margin-bottom:12px;max-height:300px;object-fit:cover;}
+.post-actions{display:flex;gap:16px;padding-top:10px;border-top:1px solid var(--br);}
+.paction{display:flex;align-items:center;gap:5px;font-size:10px;color:var(--td);cursor:pointer;transition:color .2s;padding:4px 8px;border-radius:4px;}
+.paction:hover{color:var(--gld);background:rgba(232,197,71,.05);}
+.paction.liked{color:var(--acc);}
+.paction.liked:hover{color:var(--acc);}
+.skill-verify-post{background:linear-gradient(135deg,rgba(232,197,71,.06),rgba(255,107,53,.04));border:1px solid rgba(232,197,71,.2);border-radius:6px;padding:12px;margin-bottom:10px;}
+.achievement-post{background:linear-gradient(135deg,rgba(167,139,250,.06),rgba(96,165,250,.04));border:1px solid rgba(167,139,250,.2);border-radius:6px;padding:12px;margin-bottom:10px;}
+
+/* ─── TALENT ─── */
+.tgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:12px;}
+.rep-strip{display:flex;align-items:center;gap:10px;padding:10px 13px;background:var(--s2);border-radius:6px;border:1px solid var(--br);}
+.stars{font-size:10px;letter-spacing:2px;color:var(--gld);}
+.rep-num{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:var(--gld);}
+.rep-pts{font-family:'Syne',sans-serif;font-size:12px;font-weight:700;color:var(--pur);}
+
+/* ─── CATS ─── */
+.cats{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:20px;}
+.cat{background:var(--s2);border:1px solid var(--br);color:var(--td);font-family:'DM Mono',monospace;font-size:10px;padding:5px 13px;border-radius:20px;cursor:pointer;transition:all .2s;}
+.cat.active{background:rgba(232,197,71,.08);border-color:var(--gld);color:var(--gld);}
+
+/* ─── GIGS ─── */
+.gig-item{background:var(--s);border:1px solid var(--br);border-radius:var(--r);padding:16px 20px;display:flex;align-items:center;gap:13px;transition:all .2s;cursor:pointer;margin-bottom:9px;}
+.gig-item:hover{border-color:var(--gld);}
+.gig-icon{width:40px;height:40px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;}
+.gig-pay{font-family:'Syne',sans-serif;font-weight:700;font-size:14px;color:var(--grn);}
+
+/* ─── MESSAGES ─── */
+.msg-layout{display:grid;grid-template-columns:260px 1fr;height:calc(100vh - 60px);}
+.msg-sb{border-right:1px solid var(--br);overflow-y:auto;display:flex;flex-direction:column;}
+.conv{padding:12px 15px;border-bottom:1px solid var(--br);cursor:pointer;transition:background .15s;display:flex;align-items:center;gap:10px;}
+.conv:hover,.conv.active{background:var(--s2);}
+.conv-av{width:36px;height:36px;border-radius:50%;overflow:hidden;flex-shrink:0;}
+.unread-dot{background:var(--gld);color:#000;font-size:8px;font-weight:700;width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;flex-shrink:0;}
+.msg-main{display:flex;flex-direction:column;}
+.bubble{max-width:70%;padding:10px 14px;border-radius:12px;font-size:12px;line-height:1.6;}
+.bubble.me{background:rgba(232,197,71,.1);border:1px solid rgba(232,197,71,.18);align-self:flex-end;border-bottom-right-radius:4px;}
+.bubble.them{background:var(--s2);border:1px solid var(--br);align-self:flex-start;border-bottom-left-radius:4px;}
+.btime{font-size:9px;color:var(--td);margin-top:3px;}
+
+/* ─── WALLET ─── */
+.wallet-card{background:linear-gradient(135deg,#0f1a0a,#1a1408,#0a1020);border:1px solid rgba(74,222,128,.2);border-radius:12px;padding:26px;position:relative;overflow:hidden;margin-bottom:18px;}
+.wallet-card::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(45deg,transparent,transparent 20px,rgba(74,222,128,.012) 20px,rgba(74,222,128,.012) 21px);}
+.wallet-card::after{content:'';position:absolute;top:-80px;right:-80px;width:250px;height:250px;border-radius:50%;background:radial-gradient(circle,rgba(74,222,128,.08) 0%,transparent 70%);}
+.w-balance{font-family:'Syne',sans-serif;font-size:42px;font-weight:800;color:var(--grn);position:relative;z-index:1;line-height:1;}
+.w-label{font-size:10px;color:rgba(74,222,128,.6);text-transform:uppercase;letter-spacing:.12em;margin-bottom:8px;position:relative;z-index:1;}
+.w-meta{display:flex;gap:20px;margin-top:16px;position:relative;z-index:1;}
+.w-mi{font-size:10px;color:rgba(255,255,255,.4);}
+.w-mv{font-family:'Syne',sans-serif;font-weight:700;font-size:13px;color:var(--tx);display:block;margin-bottom:1px;}
+.w-actions{display:flex;gap:10px;margin-top:18px;position:relative;z-index:1;}
+.w-btn{flex:1;padding:10px;background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.25);color:var(--grn);font-family:'Syne',sans-serif;font-weight:700;font-size:11px;border-radius:var(--r);cursor:pointer;transition:all .2s;text-align:center;}
+.w-btn:hover{background:rgba(74,222,128,.2);}
+.tx-row{display:flex;align-items:center;gap:12px;padding:12px;background:var(--s2);border-radius:var(--r);margin-bottom:7px;border:1px solid var(--br);}
+.tx-icon{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
+.tx-amount{font-family:'Syne',sans-serif;font-weight:700;font-size:14px;}
+.tx-in{color:var(--grn);}
+.tx-out{color:var(--acc);}
+
+/* ─── PROFILE ─── */
+.pbanner{height:180px;background:linear-gradient(135deg,#0d1015,#121a10,#150f0a);position:relative;overflow:hidden;}
+.pbanner::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 25% 60%,rgba(232,197,71,.09) 0%,transparent 50%),radial-gradient(ellipse at 75% 30%,rgba(255,107,53,.06) 0%,transparent 50%);}
+.pbanner::after{content:'';position:absolute;inset:0;background-image:repeating-linear-gradient(0deg,transparent,transparent 39px,rgba(255,255,255,.01) 40px),repeating-linear-gradient(90deg,transparent,transparent 39px,rgba(255,255,255,.01) 40px);}
+.playout{display:grid;grid-template-columns:1fr 300px;gap:22px;max-width:1120px;margin:-65px auto 0;padding:0 44px 48px;position:relative;z-index:1;}
+.pid{background:var(--s);border:1px solid var(--br);border-radius:var(--r);padding:24px;margin-bottom:16px;position:relative;}
+.pid::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--gld),var(--acc));border-radius:var(--r) var(--r) 0 0;}
+.p-top{display:flex;gap:18px;align-items:flex-start;margin-bottom:16px;}
+.p-big-av{width:84px;height:84px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:30px;color:#000;flex-shrink:0;border:3px solid var(--br);position:relative;overflow:hidden;cursor:pointer;}
+.p-big-av img{width:100%;height:100%;object-fit:cover;}
+.p-big-av .av-overlay{position:absolute;inset:0;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;font-size:11px;color:#fff;opacity:0;transition:opacity .2s;font-family:'Syne',sans-serif;font-weight:600;}
+.p-big-av:hover .av-overlay{opacity:1;}
+.online-dot{position:absolute;bottom:-3px;right:-3px;width:13px;height:13px;border-radius:50%;background:var(--grn);border:2px solid var(--s);}
+.p-name{font-family:'Syne',sans-serif;font-size:21px;font-weight:800;letter-spacing:-.5px;margin-bottom:3px;display:flex;align-items:center;gap:7px;flex-wrap:wrap;}
+.p-title{font-size:11px;color:var(--td);margin-bottom:9px;}
+.pmeta{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px;}
+.mpill{font-size:9px;color:var(--td);padding:3px 7px;background:var(--s2);border:1px solid var(--br);border-radius:20px;}
+.pstats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--br);border:1px solid var(--br);border-radius:var(--r);overflow:hidden;margin-bottom:16px;}
+.pstat{background:var(--s2);padding:12px;text-align:center;}
+.psval{font-family:'Syne',sans-serif;font-weight:800;font-size:17px;margin-bottom:1px;}
+.pslbl{font-size:9px;color:var(--td);text-transform:uppercase;letter-spacing:.07em;}
+.psec{background:var(--s);border:1px solid var(--br);border-radius:var(--r);padding:20px;margin-bottom:14px;}
+.psec-t{font-family:'Syne',sans-serif;font-weight:700;font-size:13px;margin-bottom:14px;padding-bottom:9px;border-bottom:1px solid var(--br);}
+.skill-r{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.skill-bar{flex:1;height:3px;background:var(--br);border-radius:3px;overflow:hidden;}
+.skill-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--gld),var(--acc));}
+.psidebar{}
+.pkg-card{background:var(--s);border:1px solid var(--br);border-radius:var(--r);overflow:hidden;margin-bottom:14px;position:sticky;top:70px;}
+.pkg-tabs{display:flex;border-bottom:1px solid var(--br);}
+.ptab{flex:1;padding:10px;background:none;border:none;color:var(--td);font-family:'Syne',sans-serif;font-size:9px;font-weight:600;cursor:pointer;text-align:center;text-transform:uppercase;letter-spacing:.08em;transition:all .2s;border-bottom:2px solid transparent;}
+.ptab.active{color:var(--gld);border-bottom-color:var(--gld);}
+.pkg-body{padding:18px;}
+.scard{background:var(--s);border:1px solid var(--br);border-radius:var(--r);padding:15px;margin-bottom:12px;}
+.scard-t{font-family:'Syne',sans-serif;font-weight:600;font-size:11px;margin-bottom:9px;}
+.irow{display:flex;justify-content:space-between;font-size:10px;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.03);}
+.irow:last-child{border-bottom:none;}
+.ilbl{color:var(--td);}
+.ival{font-family:'Syne',sans-serif;font-weight:600;font-size:10px;}
+
+/* ─── LEADERBOARD ─── */
+.lb-row{display:flex;align-items:center;gap:12px;padding:13px 16px;background:var(--s);border:1px solid var(--br);border-radius:var(--r);margin-bottom:7px;transition:border-color .2s;cursor:pointer;}
+.lb-row:hover{border-color:rgba(232,197,71,.25);}
+.lb-rank{font-family:'Syne',sans-serif;font-weight:800;font-size:18px;width:30px;text-align:center;flex-shrink:0;}
+
+/* ─── DASHBOARD ─── */
+.dgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:11px;margin-bottom:22px;}
+.mc{background:var(--s);border:1px solid var(--br);border-radius:var(--r);padding:18px;position:relative;overflow:hidden;}
+.mc::after{content:attr(data-i);position:absolute;right:10px;top:10px;font-size:22px;opacity:.13;}
+.mv{font-family:'Syne',sans-serif;font-size:26px;font-weight:800;margin-bottom:2px;}
+.ml{font-size:9px;color:var(--td);text-transform:uppercase;letter-spacing:.08em;}
+
+/* ─── ADMIN ─── */
+.admin-row{display:flex;align-items:center;gap:11px;padding:13px 16px;background:var(--s);border:1px solid var(--br);border-radius:var(--r);margin-bottom:7px;}
+.admin-actions{display:flex;gap:5px;margin-left:auto;flex-shrink:0;flex-wrap:wrap;}
+
+/* ─── ENDORSE ─── */
+.endorse-item{padding:13px;background:var(--s2);border:1px solid var(--br);border-radius:var(--r);margin-bottom:7px;}
+.endorse-av{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:700;font-size:10px;color:#000;flex-shrink:0;overflow:hidden;}
+.endorse-av img{width:100%;height:100%;object-fit:cover;}
+
+/* ─── MODAL ─── */
+.moverlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:1000;align-items:center;justify-content:center;padding:20px;}
+.moverlay.show{display:flex;}
+.modal{background:var(--s);border:1px solid var(--br);border-radius:var(--r);padding:24px;width:90%;max-width:500px;animation:popIn .2s ease;position:relative;max-height:90vh;overflow-y:auto;}
+.modal h3{font-family:'Syne',sans-serif;font-size:17px;font-weight:800;margin-bottom:3px;}
+.modal p{font-size:11px;color:var(--td);margin-bottom:16px;line-height:1.6;}
+.mclose{position:absolute;top:12px;right:12px;background:none;border:none;color:var(--td);cursor:pointer;font-size:19px;line-height:1;}
+.sick{width:48px;height:48px;border-radius:50%;background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.28);display:flex;align-items:center;justify-content:center;font-size:19px;margin-bottom:11px;}
+.escrow{background:var(--s2);border:1px solid var(--br);border-radius:var(--r);padding:14px;margin-top:11px;}
+.erow{display:flex;justify-content:space-between;font-size:11px;margin-bottom:6px;}
+
+/* ─── AI CHAT ─── */
+.ai-bubble{padding:11px 14px;border-radius:10px;font-size:12px;line-height:1.65;max-width:85%;}
+.ai-bubble.user{background:rgba(232,197,71,.08);border:1px solid rgba(232,197,71,.15);align-self:flex-end;border-bottom-right-radius:3px;margin-left:auto;}
+.ai-bubble.bot{background:rgba(167,139,250,.08);border:1px solid rgba(167,139,250,.18);border-bottom-left-radius:3px;}
+.typing{display:flex;gap:4px;padding:12px 16px;align-items:center;}
+.typing span{width:6px;height:6px;border-radius:50%;background:var(--pur);animation:pulse .8s infinite;}
+.typing span:nth-child(2){animation-delay:.15s;}
+.typing span:nth-child(3){animation-delay:.3s;}
+
+/* ─── SKILL ID CARD ─── */
+.skillid-card{background:linear-gradient(135deg,#0f1a0f,#1a1208,#0d1520);border:1px solid rgba(232,197,71,.22);border-radius:12px;padding:22px;position:relative;overflow:hidden;}
+.skillid-card::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(45deg,transparent,transparent 20px,rgba(232,197,71,.012) 20px,rgba(232,197,71,.012) 21px);}
+.sid-num{font-family:'DM Mono',monospace;font-size:20px;font-weight:500;color:var(--gld);letter-spacing:.15em;margin-bottom:3px;position:relative;z-index:1;}
+
+/* ─── TOAST ─── */
+.toast{position:fixed;bottom:24px;right:24px;background:var(--s);border:1px solid var(--br);border-radius:var(--r);padding:12px 16px;font-size:12px;z-index:9999;box-shadow:0 8px 32px rgba(0,0,0,.6);transform:translateY(20px);opacity:0;transition:all .3s;pointer-events:none;max-width:320px;}
+.toast.show{transform:translateY(0);opacity:1;}
+.toast.ok{border-left:3px solid var(--grn);}
+.toast.bad{border-left:3px solid var(--acc);}
+.toast.info{border-left:3px solid var(--blu);}
+
+/* ─── NOTIFICATION PANEL ─── */
+.notif-panel{position:fixed;top:60px;right:20px;width:320px;background:var(--s);border:1px solid var(--br);border-radius:var(--r);z-index:500;max-height:400px;overflow-y:auto;box-shadow:0 8px 32px rgba(0,0,0,.5);display:none;animation:slideIn .2s ease;}
+.notif-panel.show{display:block;}
+.notif-item{padding:12px 14px;border-bottom:1px solid var(--br);font-size:11px;display:flex;gap:9px;align-items:flex-start;}
+.notif-item.unread{background:rgba(232,197,71,.03);}
+.notif-dot{width:7px;height:7px;border-radius:50%;background:var(--gld);margin-top:4px;flex-shrink:0;}
+
+@media(max-width:960px){
+  .ll{display:none;}.lr{width:100%;}
+  nav{padding:10px 16px;}.ntabs{display:none;}
+  .section{padding:24px 16px;}
+  .stats-row{grid-template-columns:1fr 1fr 1fr;}
+  .si{padding:14px 16px;}
+  .tgrid{grid-template-columns:1fr;}
+  .playout{grid-template-columns:1fr;padding:0 16px 36px;}
+  .psidebar{order:-1;}.pkg-card{position:static;}
+  .dgrid{grid-template-columns:1fr 1fr;}
+  .msg-layout{grid-template-columns:1fr;}
+  h1{font-size:36px;letter-spacing:-1.5px;}
+  .hero::after{display:none;}
+  .timeline{max-width:100%;}
+}
+</style>
+</head>
+<body>
+
+<!-- ════════ LOGIN ════════ -->
+<div id="screen-login" class="screen active">
+  <div class="ll">
+    <div class="ll-brand">Skill<span>Stamp</span></div>
+    <div class="ll-h">Where <em>trust</em><br>meets talent</div>
+    <p class="ll-sub">Africa's blockchain-verified digital identity platform — connecting the continent's best tech talent to global remote opportunities with trust at every step.</p>
+    <div class="tpills">
+      <div class="tp"><div class="tp-icon">🔐</div><div><strong>Blockchain SkillID</strong><span>Auto-generated unique ID anchored on-chain</span></div></div>
+      <div class="tp"><div class="tp-icon">🤖</div><div><strong>500+ Active AI Users</strong><span>Live community of verified talent — always active</span></div></div>
+      <div class="tp"><div class="tp-icon">💰</div><div><strong>Built-in Wallet</strong><span>Receive payments directly via your SkillID</span></div></div>
+      <div class="tp"><div class="tp-icon">📰</div><div><strong>LinkedIn-style Timeline</strong><span>Share achievements, posts, and skill milestones</span></div></div>
+    </div>
+    <div class="ll-credit">Built by <span>Tega</span> · SkillStamp v5.0</div>
+  </div>
+  <div class="lr">
+    <div class="atabs">
+      <button class="atab active" onclick="switchTab('login',this)">Sign In</button>
+      <button class="atab" onclick="switchTab('signup',this)">Create Account</button>
+    </div>
+    <div id="auth-login">
+      <div class="ah">Welcome back</div>
+      <div class="as">Sign in to your SkillID dashboard</div>
+      <div class="fg"><label class="fl">Email</label><input class="fi" type="email" id="li-e" placeholder="you@example.com" onkeydown="if(event.key==='Enter')doLogin()"></div>
+      <div class="fg"><label class="fl">Password</label><input class="fi" type="password" id="li-p" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"><div class="aerr" id="li-err"></div></div>
+      <label class="save-login"><input type="checkbox" id="save-creds" checked> Remember me on this device</label>
+      <button class="btn" id="li-btn" onclick="doLogin()">Sign In →</button>
+      <div style="text-align:center;font-size:10px;color:var(--td);margin-top:10px;"><a onclick="switchTab('signup',document.querySelectorAll('.atab')[1])" style="color:var(--gld);cursor:pointer;">No account? Create one →</a></div>
+      <div style="margin-top:12px;padding:10px;background:var(--s);border-radius:6px;border:1px solid var(--br);font-size:10px;color:var(--td);text-align:center;">
+        Demo admin: <span style="color:var(--gld);">admin@skillstamp.com</span> / <span style="color:var(--gld);">admin123</span>
+      </div>
+    </div>
+    <div id="auth-signup" style="display:none;">
+      <div class="ah">Join SkillStamp</div>
+      <div class="as">Get your verified SkillID — it takes 60 seconds</div>
+      <div style="margin-bottom:11px;">
+        <div class="fl" style="margin-bottom:6px;">I am a…</div>
+        <div class="role-g">
+          <div class="rc sel" id="role-f" onclick="selRole('freelancer')"><div class="ri">💼</div><div class="rl">Freelancer</div><div class="rs">Find work</div></div>
+          <div class="rc" id="role-e" onclick="selRole('employer')"><div class="ri">🏢</div><div class="rl">Employer</div><div class="rs">Hire talent</div></div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:9px;">
+        <div class="fg"><label class="fl">First Name</label><input class="fi" id="ri-fn" placeholder="Adaeze"></div>
+        <div class="fg"><label class="fl">Last Name</label><input class="fi" id="ri-ln" placeholder="Okafor"></div>
+      </div>
+      <div class="fg"><label class="fl">Email</label><input class="fi" type="email" id="ri-em" placeholder="you@example.com"><div class="aerr" id="ri-err"></div></div>
+      <div class="fg"><label class="fl">Password</label><input class="fi" type="password" id="ri-pw" placeholder="Min 6 characters"></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:9px;">
+        <div class="fg"><label class="fl">Country</label>
+          <select class="fi" id="ri-co"><option>Nigeria</option><option>Ghana</option><option>Kenya</option><option>South Africa</option><option>Senegal</option><option>Rwanda</option><option>Ethiopia</option><option>Uganda</option><option>Tanzania</option><option>Cameroon</option></select>
+        </div>
+        <div class="fg"><label class="fl">Category</label>
+          <select class="fi" id="ri-cat"><option value="Tech">💻 Tech</option><option value="Design">🎨 Design</option><option value="Writing">✍️ Writing</option><option value="Marketing">📣 Marketing</option><option value="Blockchain">⛓️ Blockchain</option><option value="Data">📊 Data</option></select>
+        </div>
+      </div>
+      <label class="save-login"><input type="checkbox" id="save-creds-s" checked> Remember me on this device</label>
+      <button class="btn" id="ri-btn" onclick="doSignup()">Create Account & Get SkillID →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════════ APP ════════ -->
+<div id="screen-app" class="screen">
+  <nav>
+    <div class="logo" onclick="showPage('home')">Skill<span>Stamp</span></div>
+    <div class="ntabs">
+      <button class="nt active" id="tab-home" onclick="showPage('home')">Home</button>
+      <button class="nt" id="tab-timeline" onclick="showPage('timeline')">Timeline</button>
+      <button class="nt" id="tab-talent" onclick="showPage('talent')">Talent</button>
+      <button class="nt" id="tab-gigs" onclick="showPage('gigs')">Gigs</button>
+      <button class="nt" id="tab-messages" onclick="showPage('messages')">Inbox<span class="nbadge" id="ubadge"></span></button>
+      <button class="nt" id="tab-wallet" onclick="showPage('wallet')">💳 Wallet</button>
+      <button class="nt" id="tab-leaderboard" onclick="showPage('leaderboard')">🏆 Board</button>
+      <button class="nt" id="tab-dashboard" onclick="showPage('dashboard')">Stats</button>
+      <button class="nt" id="tab-admin" onclick="showPage('admin')" style="display:none;color:var(--acc);">⚙ Admin</button>
+    </div>
+    <div class="nuser">
+      <button class="b2sm" onclick="toggleNotifs()" style="position:relative;">🔔<span id="notif-count" style="position:absolute;top:-4px;right:-4px;background:var(--acc);color:#fff;font-size:7px;width:14px;height:14px;border-radius:50%;display:none;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:700;"></span></button>
+      <div class="nav-av" id="nav-av" onclick="showPage('myprofile')" title="My Profile"></div>
+      <button class="b2sm" onclick="doLogout()">Out</button>
+    </div>
+  </nav>
+
+  <!-- HOME -->
+  <div class="page active" id="page-home">
+    <div class="hero">
+      <div class="htag">500+ VERIFIED MEMBERS · LIVE COMMUNITY</div>
+      <h1>Trust is the<br><em>new</em> currency<br>of remote work</h1>
+      <p class="hsub">Africa's blockchain-verified digital identity platform. 500+ active members. Real-time timeline. Built-in wallet. Community-driven verification.</p>
+      <div style="display:flex;gap:9px;flex-wrap:wrap;">
+        <button class="btn" style="width:auto;" onclick="showPage('myprofile')">My SkillID</button>
+        <button class="btn2" style="width:auto;" onclick="showPage('timeline')">📰 Timeline</button>
+        <button class="btn2" style="width:auto;" onclick="showPage('talent')">Browse Talent</button>
+        <button class="btn2" style="width:auto;" onclick="showPage('wallet')">💳 Wallet</button>
+      </div>
+    </div>
+    <div class="stats-row">
+      <div class="si"><span class="sn" id="h-users">0</span><span class="sl">Verified SkillIDs</span></div>
+      <div class="si"><span class="sn" id="h-posts">0</span><span class="sl">Timeline Posts</span></div>
+      <div class="si"><span class="sn" id="h-gigs">0</span><span class="sl">Gigs Posted</span></div>
+      <div class="si"><span class="sn" id="h-endorse">0</span><span class="sl">Endorsements</span></div>
+      <div class="si"><span class="sn" id="h-vol">$0</span><span class="sl">Escrow Volume</span></div>
+    </div>
+    <div class="section" style="padding-top:0;">
+      <div class="sh"><span class="st">Recently Active</span><span class="sc">Live members</span></div>
+      <div style="display:flex;gap:-8px;margin-bottom:20px;" id="active-avatars"></div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;">
+        <div class="card card-accent"><div style="font-size:24px;margin-bottom:10px;">🔐</div><div style="font-family:'Syne',sans-serif;font-weight:700;font-size:12px;margin-bottom:5px;">VERIFY</div><div style="font-size:10px;color:var(--td);line-height:1.7;">Get auto-generated SkillID anchored to blockchain. NIN/BVN-verified identity.</div></div>
+        <div class="card card-accent"><div style="font-size:24px;margin-bottom:10px;">📰</div><div style="font-family:'Syne',sans-serif;font-weight:700;font-size:12px;margin-bottom:5px;">CONNECT</div><div style="font-size:10px;color:var(--td);line-height:1.7;">Post on the timeline. Endorse peers. Message directly. Build your reputation.</div></div>
+        <div class="card card-accent"><div style="font-size:24px;margin-bottom:10px;">💰</div><div style="font-family:'Syne',sans-serif;font-weight:700;font-size:12px;margin-bottom:5px;">EARN</div><div style="font-size:10px;color:var(--td);line-height:1.7;">Apply to gigs. Get paid through secure escrow. Wallet receives payments instantly.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TIMELINE -->
+  <div class="page" id="page-timeline">
+    <div class="section">
+      <div style="display:grid;grid-template-columns:1fr 300px;gap:22px;max-width:1100px;margin:0 auto;">
+        <div>
+          <div class="sh"><span class="st">📰 Timeline</span><span class="sc">Community feed</span></div>
+          <!-- Composer -->
+          <div class="post-composer">
+            <div class="composer-row">
+              <div class="av post-av" id="composer-av" style="width:40px;height:40px;border-radius:50%;flex-shrink:0;"></div>
+              <textarea class="post-ta" id="post-input" placeholder="Share a skill achievement, post a tip, or announce a milestone…"></textarea>
+            </div>
+            <div class="composer-actions">
+              <div class="post-type-pills">
+                <div class="ptype active" onclick="selPostType('general',this)">💬 Post</div>
+                <div class="ptype" onclick="selPostType('achievement',this)">🏆 Achievement</div>
+                <div class="ptype" onclick="selPostType('skill',this)">⚡ Skill Update</div>
+                <div class="ptype" onclick="selPostType('hiring',this)">💼 Hiring</div>
+              </div>
+              <button class="bsm" onclick="submitPost()">Post →</button>
+            </div>
+          </div>
+          <div id="timeline-feed"></div>
+        </div>
+        <!-- Timeline sidebar -->
+        <div>
+          <div class="card card-accent" style="margin-bottom:14px;">
+            <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:12px;margin-bottom:12px;">🔥 Trending Skills</div>
+            <div id="trending-skills"></div>
+          </div>
+          <div class="card" style="margin-bottom:14px;">
+            <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:12px;margin-bottom:12px;">👥 Who to Follow</div>
+            <div id="suggested-users"></div>
+          </div>
+          <div class="card">
+            <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:12px;margin-bottom:10px;">⚡ Your Reputation</div>
+            <div id="my-rep-mini"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TALENT -->
+  <div class="page" id="page-talent">
+    <div class="section">
+      <div class="sh"><span class="st">Verified Talent</span><span class="sc" id="talent-count"></span>
+        <div style="margin-left:auto;"><input class="fi" id="talent-search" placeholder="Search…" style="width:180px;padding:6px 11px;font-size:11px;" oninput="renderTalent()"></div>
+      </div>
+      <div class="cats" id="talent-cats">
+        <div class="cat active" onclick="filterCat('All',this)">All</div>
+        <div class="cat" onclick="filterCat('Tech',this)">💻 Tech</div>
+        <div class="cat" onclick="filterCat('Design',this)">🎨 Design</div>
+        <div class="cat" onclick="filterCat('Writing',this)">✍️ Writing</div>
+        <div class="cat" onclick="filterCat('Marketing',this)">📣 Marketing</div>
+        <div class="cat" onclick="filterCat('Blockchain',this)">⛓️ Blockchain</div>
+        <div class="cat" onclick="filterCat('Data',this)">📊 Data</div>
+      </div>
+      <div class="tgrid" id="tgrid"></div>
+    </div>
+  </div>
+
+  <!-- GIGS -->
+  <div class="page" id="page-gigs">
+    <div class="section">
+      <div class="sh"><span class="st">Open Gigs</span><span class="sc" id="gigs-count"></span>
+        <button class="bsm" style="margin-left:auto;" onclick="openPostGig()">+ Post a Gig</button>
+      </div>
+      <div class="cats" id="gig-cats">
+        <div class="cat active" onclick="filterGigCat('All',this)">All</div>
+        <div class="cat" onclick="filterGigCat('Tech',this)">💻 Tech</div>
+        <div class="cat" onclick="filterGigCat('Design',this)">🎨 Design</div>
+        <div class="cat" onclick="filterGigCat('Writing',this)">✍️ Writing</div>
+        <div class="cat" onclick="filterGigCat('Marketing',this)">📣 Marketing</div>
+        <div class="cat" onclick="filterGigCat('Blockchain',this)">⛓️ Blockchain</div>
+        <div class="cat" onclick="filterGigCat('Data',this)">📊 Data</div>
+      </div>
+      <div id="gig-list"></div>
+    </div>
+  </div>
+
+  <!-- MESSAGES -->
+  <div class="page" id="page-messages">
+    <div class="msg-layout">
+      <div class="msg-sb">
+        <div style="padding:14px 16px;border-bottom:1px solid var(--br);font-family:'Syne',sans-serif;font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:space-between;">
+          Inbox <button class="bsm" style="padding:4px 9px;font-size:9px;" onclick="openNewMsg()">+ New</button>
+        </div>
+        <div id="conv-list"></div>
+      </div>
+      <div class="msg-main" id="msg-main">
+        <div style="flex:1;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px;color:var(--td);">
+          <div style="font-size:36px;opacity:.2;">💬</div>
+          <div style="font-size:12px;">Select a conversation</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WALLET -->
+  <div class="page" id="page-wallet">
+    <div class="section">
+      <div class="sh"><span class="st">💳 SkillStamp Wallet</span><span class="sc">Your earnings dashboard</span></div>
+      <div style="max-width:700px;">
+        <div class="wallet-card">
+          <div class="w-label">Total Balance</div>
+          <div class="w-balance" id="w-balance">$0.00</div>
+          <div class="w-meta">
+            <div class="w-mi"><span class="w-mv" id="w-earned">$0</span>Total Earned</div>
+            <div class="w-mi"><span class="w-mv" id="w-pending">$0</span>Pending</div>
+            <div class="w-mi"><span class="w-mv" id="w-address">SKL-XXXX</span>Wallet ID</div>
+          </div>
+          <div class="w-actions">
+            <div class="w-btn" onclick="openReceive()">📥 Receive</div>
+            <div class="w-btn" onclick="openSend()">📤 Send</div>
+            <div class="w-btn" onclick="openWithdraw()">🏦 Withdraw</div>
+            <div class="w-btn" onclick="openTopUp()">➕ Top Up</div>
+          </div>
+        </div>
+        <div class="card card-accent" style="margin-bottom:14px;">
+          <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:13px;margin-bottom:14px;">Transaction History</div>
+          <div id="tx-list"></div>
+        </div>
+        <div class="card">
+          <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:13px;margin-bottom:12px;">Escrow Contracts</div>
+          <div id="escrow-list"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MY PROFILE -->
+  <div class="page" id="page-myprofile">
+    <div id="myprofile-content"></div>
+  </div>
+
+  <!-- VIEW PROFILE -->
+  <div class="page" id="page-viewprofile">
+    <div id="viewprofile-content"></div>
+  </div>
+
+  <!-- LEADERBOARD -->
+  <div class="page" id="page-leaderboard">
+    <div class="section">
+      <div class="sh"><span class="st">🏆 Reputation Leaderboard</span><span class="sc">Top 50 by reputation score</span></div>
+      <div style="display:grid;grid-template-columns:1fr 320px;gap:18px;">
+        <div id="lb-list"></div>
+        <div>
+          <div class="card card-accent" style="margin-bottom:13px;">
+            <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:12px;margin-bottom:12px;">⚡ Reputation Formula</div>
+            <div style="display:flex;flex-direction:column;gap:5px;">
+              ${[['✅ Verified Skill','+10 pts'],['🤝 Peer Endorsement','+5 pts'],['💼 Gig Completed','+15 pts'],['⭐ 5-Star Review','+8 pts'],['📰 Post Liked','+1 pt'],['❌ False Claim','-10 pts']].map(([a,b])=>`<div style="display:flex;justify-content:space-between;font-size:10px;padding:5px 9px;background:var(--s2);border-radius:4px;"><span>${a}</span><span style="color:${b.includes('-')?'var(--acc)':'var(--grn)'];font-weight:700;">${b}</span></div>`).join('')}
+            </div>
+          </div>
+          <div class="card" id="my-rank-card">
+            <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:12px;margin-bottom:9px;">My Ranking</div>
+            <div id="my-rank-content"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DASHBOARD -->
+  <div class="page" id="page-dashboard">
+    <div class="section">
+      <div class="sh"><span class="st">Platform Statistics</span><span class="sc">Live demo metrics</span></div>
+      <div class="dgrid">
+        <div class="mc" data-i="👤"><div class="mv" style="color:var(--gld);" id="d-users">0</div><div class="ml">Registered</div></div>
+        <div class="mc" data-i="💼"><div class="mv" style="color:var(--grn);" id="d-gigs">0</div><div class="ml">Gigs</div></div>
+        <div class="mc" data-i="🤝"><div class="mv" style="color:var(--blu);" id="d-endorse">0</div><div class="ml">Endorsements</div></div>
+        <div class="mc" data-i="⚡"><div class="mv" style="color:var(--pur);" id="d-pts">0</div><div class="ml">Rep Points</div></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:13px;">
+        <div class="card card-accent"><div style="font-family:'Syne',sans-serif;font-weight:700;margin-bottom:12px;font-size:12px;">Top Skills</div><div id="d-skills"></div></div>
+        <div class="card card-accent"><div style="font-family:'Syne',sans-serif;font-weight:700;margin-bottom:12px;font-size:12px;">Categories</div><div id="d-cats"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADMIN -->
+  <div class="page" id="page-admin">
+    <div class="section">
+      <div style="display:inline-flex;align-items:center;gap:9px;background:rgba(255,107,53,.07);border:1px solid rgba(255,107,53,.22);border-radius:var(--r);padding:9px 14px;margin-bottom:22px;">
+        <span>⚙️</span><div><div style="font-family:'Syne',sans-serif;font-weight:700;font-size:12px;color:var(--acc);">Admin Review Panel</div><div style="font-size:9px;color:var(--td);">Approve skills, manage badges, adjust reputation</div></div>
+      </div>
+      <div class="sh"><span class="st">Pending Submissions</span></div>
+      <div id="admin-pending"></div>
+      <div class="sh" style="margin-top:24px;"><span class="st">All Users</span><span class="sc" id="admin-user-count"></span></div>
+      <div id="admin-users"></div>
+    </div>
+  </div>
+</div>
+
+<!-- NOTIFICATIONS PANEL -->
+<div class="notif-panel" id="notif-panel">
+  <div style="padding:12px 14px;border-bottom:1px solid var(--br);font-family:'Syne',sans-serif;font-weight:700;font-size:12px;display:flex;justify-content:space-between;align-items:center;">
+    Notifications <button onclick="clearNotifs()" style="background:none;border:none;color:var(--td);font-size:10px;cursor:pointer;">Clear all</button>
+  </div>
+  <div id="notif-list"></div>
+</div>
+
+<!-- MODAL -->
+<div class="moverlay" id="moverlay" onclick="if(event.target===this)closeModal()">
+  <div class="modal" id="mcontent"></div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ══════════════════════════════════════════════
+//  CONSTANTS & HELPERS
+// ══════════════════════════════════════════════
+const NAMES_F=['Adaeze','Amara','Fatima','Chioma','Ngozi','Yetunde','Abena','Akosua','Wanjiru','Aisha','Nadia','Zainab','Oluwaseun','Temitope','Blessing','Chiamaka','Ifunanya','Onyinye','Ebele','Ndidi','Aminata','Mariama','Kadiatou','Rokhaya','Awa','Makena','Zawadi','Adhiambo','Nyambura','Wambui','Thandiwe','Sibongile','Nompumelelo','Zanele','Lindiwe','Nomsa','Precious','Chanda','Mwamba','Bupe'];
+const NAMES_M=['Chidi','Emeka','Kofi','Kwame','Seun','Tunde','Babatunde','Olumide','Chukwuemeka','Ifeanyi','Jomo','Kamau','Mwangi','Kariuki','Kipchoge','Thabo','Lerato','Bongani','Sipho','Andile','Moussa','Ibrahima','Abdoulaye','Cheikh','Oumar','Amara','Seydou','Boubacar','Mamadou','Lamine','Dawit','Yohannes','Bekele','Haile','Girma','Moses','Dennis','Patrick','Victor','Emmanuel'];
+const SURNAMES=['Okafor','Mensah','Kamau','Dlamini','Diallo','Okonkwo','Asante','Waweru','Nkosi','Traore','Mwangi','Banda','Achebe','Eze','Nwosu','Adeyemi','Abubakar','Ibrahim','Hassan','Mohammed','Jallow','Sow','Barry','Bah','Camara','Kouyate','Keita','Doumbia','Coulibaly','Toure','Haile','Bekele','Tadesse','Gebre','Tesfaye','Kimani','Njoroge','Kariuki','Otieno','Ochieng'];
+const COUNTRIES=['Nigeria','Ghana','Kenya','South Africa','Senegal','Rwanda','Ethiopia','Uganda','Tanzania','Cameroon'];
+const CATEGORIES=['Tech','Design','Writing','Marketing','Blockchain','Data'];
+const CAT_ICONS={Tech:'💻',Design:'🎨',Writing:'✍️',Marketing:'📣',Blockchain:'⛓️',Data:'📊'};
+const SKILLS_BY_CAT={
+  Tech:['React','Node.js','Python','AWS','Docker','TypeScript','Next.js','DevOps','Flutter','Go','Rust','Kubernetes'],
+  Design:['Figma','UI/UX','Adobe XD','Motion Design','Brand Strategy','Illustration','3D Modeling','Prototyping'],
+  Writing:['Copywriting','Technical Writing','Content Strategy','SEO Writing','Ghostwriting','Grant Writing'],
+  Marketing:['SEO','Google Ads','Email Marketing','Social Media','Analytics','Growth Hacking','CRM'],
+  Blockchain:['Solidity','Web3.js','DeFi','Smart Contracts','NFT','Ethereum','Polygon','IPFS'],
+  Data:['Python','SQL','TensorFlow','Power BI','Tableau','Pandas','Machine Learning','Data Engineering']
+};
+const GRADS=['#e8a020','#20a0e8','#20e860','#e82060','#a020e8','#e8c020','#20e8c0','#e86020','#20c8e8','#c0e820'];
+const FLAGS={Nigeria:'🇳🇬',Ghana:'🇬🇭',Kenya:'🇰🇪','South Africa':'🇿🇦',Senegal:'🇸🇳',Rwanda:'🇷🇼',Ethiopia:'🇪🇹',Uganda:'🇺🇬',Tanzania:'🇹🇿',Cameroon:'🇨🇲'};
+const GIG_ICONS=['🐍','🎨','☁️','📱','📊','🔧','🤖','⚙️','🌐','📡','🎯','💡'];
+const GIG_COLS=['rgba(74,222,128,.08)','rgba(96,165,250,.08)','rgba(232,197,71,.08)','rgba(255,107,53,.08)'];
+const POST_TEMPLATES=[
+  u=>`Just completed a major ${pick(SKILLS_BY_CAT[u.category])} project for a fintech client in ${u.country}! 🚀 The platform handles 50K+ daily transactions. Proud of this work. #${u.category} #SkillStamp #AfricanTech`,
+  u=>`Looking for a ${pick(SKILLS_BY_CAT[u.category])} engineer for a 3-month contract. Remote-friendly. Budget: $${r(2,8)*500}. Must have SkillID verification. DM me! 💼 #Hiring`,
+  u=>`5 things I learned after 3 years of ${pick(SKILLS_BY_CAT[u.category])} in the African tech ecosystem:\n\n1️⃣ Community > Competition\n2️⃣ Documentation saves projects\n3️⃣ Client communication is a skill\n4️⃣ Build in public\n5️⃣ Always be learning`,
+  u=>`Excited to announce I just got verified on SkillStamp! My SkillID is now live. ${u.category} professional with ${r(2,8)} years experience. Let's connect! ✨ #SkillStamp #${u.country}`,
+  u=>`Hot take: African developers are some of the most resourceful engineers in the world. We build with constraints that make us 10x better problem solvers. 🌍 Agree? #AfricanTech`,
+  u=>`Passed my ${pick(SKILLS_BY_CAT[u.category])} certification today! 🎓 Months of late nights finally paid off. Reputation score up by +10. Next goal: expert badge! #LevelUp`,
+  u=>`PSA for employers: Stop offering African tech talent rates 3x lower than their global peers. Our SkillIDs prove we deliver the same — often better — quality. 💪 #PayEquity`,
+  u=>`Just endorsed 3 amazing ${u.category} professionals on SkillStamp. The quality of talent on this platform is unreal. 🤝 #Community #SkillStamp`,
+  u=>`My journey: from learning ${pick(SKILLS_BY_CAT[u.category])} on YouTube to landing a $${r(3,12)*500}/month remote contract. It's possible. Keep building. 🛤️ #${u.country}`,
+  u=>`Working on an open source ${pick(SKILLS_BY_CAT[u.category])} project aimed at solving ${['fintech','health','education','logistics'][r(0,3)]} challenges in Africa. Who wants to collaborate? Drop a comment! 🔧`
+];
+
+const DB={get(k){try{return JSON.parse(localStorage.getItem('ss5_'+k))||null;}catch{return null;}},set(k,v){localStorage.setItem('ss5_'+k,JSON.stringify(v));},del(k){localStorage.removeItem('ss5_'+k);}};
+
+function r(min,max){return Math.floor(Math.random()*(max-min+1))+min;}
+function pick(arr){return arr[r(0,arr.length-1)];}
+function gradFor(s){const h=[...s].reduce((a,c)=>a+c.charCodeAt(0),0);return GRADS[h%GRADS.length];}
+function initials(n){return(n||'?').split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();}
+function flag(c){return FLAGS[c]||'🌍';}
+function timeAgo(ts){if(!ts)return '';const d=Date.now()-ts;if(d<60000)return 'just now';if(d<3600000)return `${Math.floor(d/60000)}m ago`;if(d<86400000)return `${Math.floor(d/3600000)}h ago`;return `${Math.floor(d/86400000)}d ago`;}
+function toast(msg,type='ok'){const t=document.getElementById('toast');t.textContent=msg;t.className='toast show '+type;clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),3500);}
+function setModal(html){document.getElementById('mcontent').innerHTML=html;document.getElementById('moverlay').classList.add('show');}
+function closeModal(){document.getElementById('moverlay').classList.remove('show');}
+window.closeModal=closeModal;
+function badgeHTML(s){const m={verified:'🟢 Verified',review:'🔵 In Review',beginner:'🟡 Beginner',suspended:'🔴 Suspended',expert:'🔷 Expert'};return `<span class="badge ${s||'beginner'}">${m[s]||'🟡 Beginner'}</span>`;}
+function genSkillId(){const y=new Date().getFullYear();const c='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';let code='';for(let i=0;i<6;i++)code+=c[r(0,c.length-1)];return `SKL-${y}-${code}`;}
+function avHTML(u, size=40, radius='50%'){
+  const style=`width:${size}px;height:${size}px;border-radius:${radius};overflow:hidden;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:${Math.round(size*.35)}px;color:#000;background:linear-gradient(135deg,${u.gradient||'#888'},${u.gradient||'#888'}88);flex-shrink:0;`;
+  if(u.avatar) return `<div style="${style}"><img src="${u.avatar}" style="width:100%;height:100%;object-fit:cover;"></div>`;
+  return `<div style="${style}">${initials(u.name)}</div>`;
+}
+
+// ══════════════════════════════════════════════
+//  DATA INIT — generate 500 AI users
+// ══════════════════════════════════════════════
+function generateUsers(){
+  if(DB.get('v5_init')) return;
+  const users=[];
+  // Admin + featured users
+  const featured=[
+    {uid:'u1',email:'admin@skillstamp.com',pass:'admin123',name:'Adaeze Okafor',role:'freelancer',isAdmin:true,country:'Nigeria',category:'Tech',title:'Senior Full-Stack Engineer',bio:'10+ years building scalable apps. EDVP-certified. Driving the African tech ecosystem forward.',skills:['React','Node.js','Python','AWS','PostgreSQL'],badgeStatus:'verified',score:4.9,repPoints:580,gigsCount:47,earned:42000,skillId:'SKL-2026-7X4K92',gradient:'#e8a020',wallet:{balance:4200,pending:800,earned:42000,transactions:[{id:'t1',type:'in',amount:3500,from:'TechCorp Africa',desc:'React Dashboard Contract',ts:Date.now()-86400000},{id:'t2',type:'in',amount:1800,desc:'Python API Project',from:'StartupNG',ts:Date.now()-172800000},{id:'t3',type:'out',amount:100,desc:'Platform Fee',from:'SkillStamp',ts:Date.now()-259200000}]},created:Date.now()-9000000},
+    {uid:'u2',email:'chidi@demo.com',pass:'demo123',name:'Chidi Mensah',role:'freelancer',isAdmin:false,country:'Ghana',category:'Blockchain',title:'Blockchain & Smart Contract Developer',bio:'Solidity expert. Built DeFi protocols for 3 African fintech startups.',skills:['Solidity','Web3.js','Ethereum','Hardhat'],badgeStatus:'verified',score:4.7,repPoints:420,gigsCount:31,earned:28000,skillId:'SKL-2026-9M2P44',gradient:'#20a0e8',wallet:{balance:2800,pending:500,earned:28000,transactions:[]},created:Date.now()-7000000},
+    {uid:'u3',email:'fatima@demo.com',pass:'demo123',name:'Fatima Al-Hassan',role:'freelancer',isAdmin:false,country:'Kenya',category:'Data',title:'Data Scientist & ML Engineer',bio:'Specialized in NLP. PhD candidate at University of Nairobi.',skills:['Python','TensorFlow','Pandas','SQL'],badgeStatus:'verified',score:4.8,repPoints:490,gigsCount:38,earned:34000,skillId:'SKL-2026-4F8R21',gradient:'#20e880',wallet:{balance:3400,pending:0,earned:34000,transactions:[]},created:Date.now()-8000000},
+  ];
+  featured.forEach(u=>users.push(u));
+  // Generate 497 AI users
+  const names_all=[...NAMES_F.map(n=>[n,'F']),...NAMES_M.map(n=>[n,'M'])];
+  for(let i=0;i<497;i++){
+    const [fn]=pick(names_all);
+    const ln=pick(SURNAMES);
+    const name=`${fn} ${ln}`;
+    const country=pick(COUNTRIES);
+    const category=pick(CATEGORIES);
+    const catSkills=SKILLS_BY_CAT[category];
+    const numSkills=r(2,5);
+    const skills=[];
+    const usedSkills=new Set();
+    for(let s=0;s<numSkills;s++){let sk;do{sk=pick(catSkills);}while(usedSkills.has(sk));usedSkills.add(sk);skills.push(sk);}
+    const repPoints=r(10,450);
+    const gigsCount=r(0,40);
+    const earned=gigsCount*r(500,2000);
+    const badges=['beginner','beginner','review','verified','verified','expert'];
+    const badgeStatus=repPoints>300?'expert':repPoints>150?'verified':repPoints>60?'review':'beginner';
+    const uid='u'+(4+i);
+    users.push({
+      uid,email:`user${4+i}@skillstamp.demo`,pass:'demo123',name,role:'freelancer',isAdmin:false,
+      country,category,
+      title:`${pick(['Senior','Lead','Mid-level','Junior','Principal','Staff'])} ${category} ${pick(['Engineer','Developer','Specialist','Expert','Consultant','Professional'])}`,
+      bio:`${category} professional from ${country}. ${r(2,10)}+ years experience. Passionate about African tech. SkillStamp verified.`,
+      skills,badgeStatus,score:repPoints>0?Math.min(5,(3.5+repPoints/200+Math.random()*0.3)):0,
+      repPoints,gigsCount,earned,skillId:genSkillId(),gradient:pick(GRADS),
+      wallet:{balance:r(0,earned/5),pending:r(0,500),earned,transactions:[]},
+      created:Date.now()-r(100000,9000000),isAdmin:false
+    });
+  }
+  // Add employer
+  users.push({uid:'u501',email:'employer@demo.com',pass:'demo123',name:'TechCorp Africa',role:'employer',isAdmin:false,country:'South Africa',category:'Tech',title:'Tech Recruiter & Employer',bio:'Leading African tech company hiring remote talent.',skills:[],badgeStatus:'verified',score:0,repPoints:0,gigsCount:0,earned:0,skillId:'SKL-2026-6E1M33',gradient:'#e8c020',wallet:{balance:50000,pending:5000,earned:0,transactions:[]},created:Date.now()-6000000});
+  users.forEach(u=>DB.set('user:'+u.uid,u));
+  DB.set('users:index',users.map(u=>u.uid));
+  generateGigs(users);
+  generatePosts(users);
+  generateEndorsements(users);
+  generateMessages(users);
+  DB.set('pending',[]);
+  DB.set('v5_init',true);
+}
+
+function generateGigs(users){
+  const gigTitles={
+    Tech:['Build Full-Stack Web Application','React Native Mobile App Development','Cloud Infrastructure Setup on AWS','DevOps Pipeline & CI/CD Implementation','API Development & Integration','Machine Learning Model Deployment'],
+    Design:['Brand Identity Design for Startup','UI/UX Design for Mobile App','Motion Graphics for Marketing Campaign','Design System & Component Library','Website Redesign Project'],
+    Marketing:['Digital Marketing Strategy for Africa','SEO Optimization Campaign','Email Marketing Automation Setup','Social Media Management','Growth Hacking for SaaS Product'],
+    Blockchain:['Smart Contract Development & Audit','DeFi Protocol Implementation','NFT Marketplace Development','Web3 Frontend Integration','Tokenomics Design & Whitepaper'],
+    Data:['Data Pipeline & ETH Integration','Power BI Dashboard Development','Machine Learning Predictive Model','Data Analysis & Insights Report','Database Optimization Project'],
+    Writing:['Technical Documentation Project','Content Strategy for SaaS Blog','Grant Proposal Writing','Ghostwriting for Tech Founder','Whitepaper Development']
+  };
+  const gigs=[];
+  const employers=users.filter(u=>u.role==='employer'||r(0,5)===0);
+  Object.entries(gigTitles).forEach(([cat,titles])=>{
+    titles.forEach(title=>{
+      const poster=pick(employers);
+      const catSkills=SKILLS_BY_CAT[cat];
+      gigs.push({
+        id:'g'+gigs.length,title,description:`Looking for a verified SkillStamp professional for this ${cat.toLowerCase()} project. Must have SkillID verification. Remote-friendly.`,
+        pay:`$${r(1,8)*500}`,type:pick(['Contract','Project','Full-time Remote','Part-time','Freelance']),
+        category:cat,skills:[pick(catSkills),pick(catSkills)].filter((s,i,a)=>a.indexOf(s)===i),
+        posterUid:poster.uid,posterName:poster.name,created:Date.now()-r(10000,500000)
+      });
+    });
+  });
+  DB.set('gigs',gigs);
+}
+
+function generatePosts(users){
+  const posts=[];
+  // Generate 200 AI posts
+  for(let i=0;i<200;i++){
+    const u=pick(users.filter(u=>u.role==='freelancer'));
+    const template=pick(POST_TEMPLATES);
+    const text=template(u);
+    const type=r(0,10)<2?'achievement':r(0,10)<4?'skill':'general';
+    posts.push({
+      id:'p'+i,uid:u.uid,userName:u.name,userTitle:u.title,userGrad:u.gradient,userAvatar:u.avatar||null,
+      content:text,type,
+      likes:r(0,120),liked:false,comments:[],
+      ts:Date.now()-r(60000,8000000)
+    });
+  }
+  posts.sort((a,b)=>b.ts-a.ts);
+  DB.set('posts',posts);
+}
+
+function generateEndorsements(users){
+  const endorsements=[];
+  const comments=['Exceptional work quality. Delivered ahead of schedule.','One of the best in their field. Highly recommend!','Incredible attention to detail. Will work with again.','Expert-level skills and great communication.','Transformed our entire architecture. Brilliant mind.'];
+  for(let i=0;i<300;i++){
+    const from=pick(users);
+    let to;do{to=pick(users.filter(u=>u.role==='freelancer'));}while(to.uid===from.uid);
+    if(!to.skills||!to.skills.length) continue;
+    endorsements.push({
+      id:'e'+i,fromUid:from.uid,fromName:from.name,fromGrad:from.gradient,fromAvatar:from.avatar||null,
+      toUid:to.uid,skill:pick(to.skills),comment:pick(comments),stars:r(4,5),created:Date.now()-r(50000,7000000)
+    });
+  }
+  DB.set('endorsements',endorsements);
+}
+
+function generateMessages(users){
+  const messages={};
+  const u1=users.find(u=>u.uid==='u1');
+  const u2=users.find(u=>u.uid==='u2');
+  if(u1&&u2){
+    const cid=[u1.uid,u2.uid].sort().join('_');
+    messages[cid]={participants:[u1.uid,u2.uid],messages:[
+      {from:u2.uid,text:'Hey Adaeze! Saw your SkillStamp profile — incredible work on that fintech dashboard.',ts:Date.now()-86400000,read:true},
+      {from:u1.uid,text:'Thanks Chidi! Checked your Solidity work too — very clean smart contracts.',ts:Date.now()-82800000,read:true},
+      {from:u2.uid,text:'Want to collaborate on a DeFi project? I need a strong frontend engineer.',ts:Date.now()-3600000,read:false},
+    ]};
+  }
+  DB.set('messages',messages);
+}
+
+// ══════════════════════════════════════════════
+//  GETTERS
+// ══════════════════════════════════════════════
+let ME=null, activeCat='All', activeGigCat='All', activeConv=null, postType='general', notifs=[];
+
+function getAllUsers(){const idx=DB.get('users:index')||[];return idx.map(uid=>DB.get('user:'+uid)).filter(Boolean);}
+function getUser(uid){return DB.get('user:'+uid);}
+function saveUser(u){DB.set('user:'+u.uid,u);}
+function getPosts(){return DB.get('posts')||[];}
+function savePosts(p){DB.set('posts',p);}
+function getGigs(){return DB.get('gigs')||[];}
+function saveGigs(g){DB.set('gigs',g);}
+function getEndorsements(){return DB.get('endorsements')||[];}
+function saveEndorsements(e){DB.set('endorsements',e);}
+function getMessages(){return DB.get('messages')||{};}
+function saveMessages(m){DB.set('messages',m);}
+function getPending(){return DB.get('pending')||[];}
+function savePending(p){DB.set('pending',p);}
+function getNotifs(){return DB.get('notifs:'+ME?.uid)||[];}
+function saveNotifs(n){DB.set('notifs:'+ME.uid,n);}
+
+function addNotif(icon,msg){
+  const n=getNotifs();
+  n.unshift({id:'n'+Date.now(),icon,msg,ts:Date.now(),read:false});
+  saveNotifs(n.slice(0,50));
+  updateNotifBadge();
+}
+
+function updateNotifBadge(){
+  const n=getNotifs();
+  const unread=n.filter(x=>!x.read).length;
+  const el=document.getElementById('notif-count');
+  if(unread>0){el.textContent=unread;el.style.display='flex';}else el.style.display='none';
+}
+
+// ══════════════════════════════════════════════
+//  AUTH
+// ══════════════════════════════════════════════
+function switchTab(tab,btn){
+  document.querySelectorAll('.atab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('auth-login').style.display=tab==='login'?'':'none';
+  document.getElementById('auth-signup').style.display=tab==='signup'?'':'none';
+}
+window.switchTab=switchTab;
+
+// Load saved credentials
+window.addEventListener('load',()=>{
+  generateUsers();
+  const saved=DB.get('saved_creds');
+  if(saved){
+    document.getElementById('li-e').value=saved.email||'';
+    document.getElementById('li-p').value=saved.pass||'';
+  }
+  const sid=DB.get('session');
+  if(sid){const u=getUser(sid);if(u){ME=u;enterApp();return;}}
+});
+
+let signupRole='freelancer';
+window.selRole=function(r_){signupRole=r_;document.getElementById('role-f').classList.toggle('sel',r_==='freelancer');document.getElementById('role-e').classList.toggle('sel',r_==='employer');};
+
+window.doLogin=function(){
+  const email=document.getElementById('li-e').value.trim().toLowerCase();
+  const pass=document.getElementById('li-p').value;
+  const save=document.getElementById('save-creds').checked;
+  if(!email||!pass){showAErr('li-err','Please fill in all fields.');return;}
+  const users=getAllUsers();
+  const user=users.find(u=>u.email.toLowerCase()===email&&u.pass===pass);
+  if(!user){showAErr('li-err','Invalid email or password.');return;}
+  if(save) DB.set('saved_creds',{email,pass}); else DB.del('saved_creds');
+  ME=user; DB.set('session',user.uid);
+  enterApp();
+};
+
+window.doSignup=function(){
+  const fn=document.getElementById('ri-fn').value.trim();
+  const ln=document.getElementById('ri-ln').value.trim();
+  const email=document.getElementById('ri-em').value.trim().toLowerCase();
+  const pass=document.getElementById('ri-pw').value;
+  const country=document.getElementById('ri-co').value;
+  const category=document.getElementById('ri-cat').value;
+  const save=document.getElementById('save-creds-s').checked;
+  if(!fn||!ln||!email||!pass){toast('Please fill all fields.','bad');return;}
+  if(pass.length<6){toast('Password too short.','bad');return;}
+  if(getAllUsers().find(u=>u.email.toLowerCase()===email)){showAErr('ri-err','Email already registered.');return;}
+  const uid='u'+Date.now();
+  const name=`${fn} ${ln}`;
+  const skillId=genSkillId();
+  const user={uid,email,pass,name,role:signupRole,country,category,
+    title:signupRole==='freelancer'?'Digital Professional':'Employer / Client',
+    bio:'',skills:[],badgeStatus:'beginner',score:0,repPoints:0,gigsCount:0,earned:0,skillId,
+    gradient:gradFor(name),wallet:{balance:0,pending:0,earned:0,transactions:[]},
+    created:Date.now(),isAdmin:false,avatar:null};
+  saveUser(user);
+  const idx=DB.get('users:index')||[];idx.push(uid);DB.set('users:index',idx);
+  if(save) DB.set('saved_creds',{email,pass}); else DB.del('saved_creds');
+  ME=user; DB.set('session',uid);
+  toast(`Welcome ${fn}! Your SkillID: ${skillId} 🎉`);
+  enterApp();
+};
+
+function showAErr(id,msg){const el=document.getElementById(id);if(el){el.textContent=msg;el.style.display='block';setTimeout(()=>el.style.display='none',4000);}}
+
+window.doLogout=function(){
+  ME=null; DB.del('session'); activeConv=null;
+  document.getElementById('screen-app').classList.remove('active');
+  document.getElementById('screen-login').classList.add('active');
+};
+
+// ══════════════════════════════════════════════
+//  APP SHELL
+// ══════════════════════════════════════════════
+function enterApp(){
+  document.getElementById('screen-login').classList.remove('active');
+  document.getElementById('screen-app').classList.add('active');
+  const av=document.getElementById('nav-av');
+  if(ME.avatar){av.innerHTML=`<img src="${ME.avatar}" style="width:100%;height:100%;object-fit:cover;">`;}
+  else{av.textContent=initials(ME.name);av.style.background=`linear-gradient(135deg,${ME.gradient},${ME.gradient}88)`;}
+  if(ME.isAdmin) document.getElementById('tab-admin').style.display='';
+  updateHomeStats();
+  updateUnreadBadge();
+  updateNotifBadge();
+  showPage('home');
+  // Simulate AI activity every 30 seconds
+  setInterval(simulateAIActivity,30000);
+}
+
+function updateHomeStats(){
+  const users=getAllUsers();const posts=getPosts();const gigs=getGigs();const endorse=getEndorsements();
+  document.getElementById('h-users').textContent=users.length;
+  document.getElementById('h-posts').textContent=posts.length;
+  document.getElementById('h-gigs').textContent=gigs.length;
+  document.getElementById('h-endorse').textContent=endorse.length;
+  const vol=gigs.reduce((a,g)=>a+(parseFloat((g.pay||'0').replace(/[^0-9.]/g,''))||0),0);
+  document.getElementById('h-vol').textContent='$'+Math.round(vol/1000)+'K';
+  // Active avatars
+  const recent=getAllUsers().sort(()=>Math.random()-.5).slice(0,12);
+  document.getElementById('active-avatars').innerHTML=`<div style="display:flex;flex-wrap:wrap;gap:4px;">${recent.map(u=>`<div title="${u.name}" style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,${u.gradient},${u.gradient}88);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:700;font-size:12px;color:#000;border:2px solid var(--bg);cursor:pointer;" onclick="viewProfile('${u.uid}')">${u.avatar?`<img src="${u.avatar}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">`:initials(u.name)}</div>`).join('')}<span style="font-size:11px;color:var(--td);margin-left:8px;align-self:center;">+${users.length-12} more online</span></div>`;
+}
+
+window.showPage=function(name){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nt').forEach(b=>b.classList.remove('active'));
+  const pg=document.getElementById('page-'+name);if(pg)pg.classList.add('active');
+  const tb=document.getElementById('tab-'+name);if(tb)tb.classList.add('active');
+  window.scrollTo(0,0);
+  if(name==='timeline') renderTimeline();
+  if(name==='talent') renderTalent();
+  if(name==='gigs') renderGigs();
+  if(name==='messages') renderConvList();
+  if(name==='myprofile') renderMyProfile();
+  if(name==='leaderboard') renderLeaderboard();
+  if(name==='dashboard') renderDashboard();
+  if(name==='admin') renderAdmin();
+  if(name==='wallet') renderWallet();
+};
+
+// ══════════════════════════════════════════════
+//  TIMELINE
+// ══════════════════════════════════════════════
+let postTypeActive='general';
+window.selPostType=function(type,el){
+  postTypeActive=type;
+  document.querySelectorAll('.ptype').forEach(p=>p.classList.remove('active'));
+  el.classList.add('active');
+};
+
+function renderTimeline(){
+  // Update composer avatar
+  const compAv=document.getElementById('composer-av');
+  if(ME.avatar){compAv.innerHTML=`<img src="${ME.avatar}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">`;compAv.style.background='';}
+  else{compAv.textContent=initials(ME.name);compAv.style.cssText=`width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,${ME.gradient},${ME.gradient}88);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:14px;color:#000;flex-shrink:0;`;}
+  const posts=getPosts().slice(0,50);
+  const feed=document.getElementById('timeline-feed');
+  feed.innerHTML=posts.map(p=>postHTML(p)).join('');
+  // Sidebar
+  renderTrending();renderSuggested();renderMyRepMini();
+}
+
+function postHTML(p){
+  const u=getUser(p.uid)||{name:p.userName,gradient:p.userGrad||'#888',title:p.userTitle||'',avatar:p.userAvatar||null};
+  const avStyle=`width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,${u.gradient||'#888'},${u.gradient||'#888'}88);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:14px;color:#000;flex-shrink:0;cursor:pointer;overflow:hidden;`;
+  const avContent=u.avatar?`<img src="${u.avatar}" style="width:100%;height:100%;object-fit:cover;">`:initials(u.name);
+  const typeLabel={general:'',achievement:'<div class="achievement-post" style="font-size:11px;">🏆 Achievement Unlocked</div>',skill:'<div class="skill-verify-post" style="font-size:11px;">⚡ Skill Update</div>',hiring:'<div style="background:rgba(96,165,250,.08);border:1px solid rgba(96,165,250,.18);border-radius:6px;padding:10px;margin-bottom:9px;font-size:11px;color:var(--blu);">💼 Hiring Post</div>'}[p.type]||'';
+  return `<div class="post" id="post-${p.id}">
+    <div class="post-header">
+      <div style="${avStyle}" onclick="viewProfile('${p.uid}')">${avContent}</div>
+      <div class="post-meta" style="flex:1;">
+        <div class="post-name" onclick="viewProfile('${p.uid}')">${p.userName}</div>
+        <div class="post-sub">${p.userTitle||'SkillStamp Member'} · ${timeAgo(p.ts)}</div>
+      </div>
+      ${p.uid===ME.uid?`<button onclick="deletePost('${p.id}')" style="background:none;border:none;color:var(--td);cursor:pointer;font-size:14px;padding:4px;">✕</button>`:''}
+    </div>
+    ${typeLabel}
+    <div class="post-content">${p.content.replace(/#(\w+)/g,'<span class="post-tag">#$1</span>')}</div>
+    <div class="post-actions">
+      <div class="paction ${p.liked?'liked':''}" onclick="likePost('${p.id}')">❤️ <span id="likes-${p.id}">${p.likes}</span></div>
+      <div class="paction" onclick="toggleComments('${p.id}')">💬 ${p.comments?.length||0}</div>
+      <div class="paction" onclick="sharePost('${p.id}')">↗️ Share</div>
+      ${p.uid!==ME.uid?`<div class="paction" onclick="viewProfile('${p.uid}')">👤 Profile</div>`:''}
+    </div>
+    <div id="comments-${p.id}" style="display:none;margin-top:10px;padding-top:10px;border-top:1px solid var(--br);">
+      ${(p.comments||[]).map(c=>`<div style="display:flex;gap:8px;margin-bottom:8px;font-size:11px;"><div style="width:26px;height:26px;border-radius:50%;background:${c.grad||'#888'};display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:700;font-size:9px;color:#000;flex-shrink:0;">${initials(c.name)}</div><div style="background:var(--s2);border-radius:6px;padding:7px 10px;flex:1;"><div style="font-family:'Syne',sans-serif;font-weight:600;font-size:10px;margin-bottom:2px;">${c.name}</div>${c.text}</div></div>`).join('')}
+      <div style="display:flex;gap:7px;margin-top:8px;">
+        <input class="fi" id="comment-input-${p.id}" placeholder="Add a comment…" style="padding:7px 10px;font-size:11px;" onkeydown="if(event.key==='Enter')submitComment('${p.id}')">
+        <button class="bsm" onclick="submitComment('${p.id}')">→</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+window.submitPost=function(){
+  const text=document.getElementById('post-input').value.trim();
+  if(!text){toast('Write something first!','bad');return;}
+  const posts=getPosts();
+  const post={id:'p'+Date.now(),uid:ME.uid,userName:ME.name,userTitle:ME.title,userGrad:ME.gradient,userAvatar:ME.avatar||null,content:text,type:postTypeActive,likes:0,liked:false,comments:[],ts:Date.now()};
+  posts.unshift(post);savePosts(posts);
+  document.getElementById('post-input').value='';
+  ME.repPoints=(ME.repPoints||0)+2;saveUser(ME);
+  toast('Posted! +2 reputation points 🎉');
+  renderTimeline();updateHomeStats();
+};
+
+window.likePost=function(pid){
+  const posts=getPosts();const p=posts.find(x=>x.id===pid);if(!p)return;
+  p.liked=!p.liked;p.likes+=(p.liked?1:-1);savePosts(posts);
+  const likesEl=document.getElementById('likes-'+pid);if(likesEl)likesEl.textContent=p.likes;
+  const actionEl=document.querySelector(`#post-${pid} .paction`);
+  if(actionEl)actionEl.className='paction'+(p.liked?' liked':'');
+  if(p.liked){ME.repPoints=(ME.repPoints||0)+1;saveUser(ME);}
+};
+
+window.toggleComments=function(pid){
+  const el=document.getElementById('comments-'+pid);
+  if(el)el.style.display=el.style.display==='none'?'block':'none';
+};
+
+window.submitComment=function(pid){
+  const inp=document.getElementById('comment-input-'+pid);
+  const text=inp?.value?.trim();if(!text)return;
+  const posts=getPosts();const p=posts.find(x=>x.id===pid);if(!p)return;
+  if(!p.comments)p.comments=[];
+  p.comments.push({uid:ME.uid,name:ME.name,grad:ME.gradient,text,ts:Date.now()});
+  savePosts(posts);inp.value='';
+  renderTimeline();
+};
+
+window.deletePost=function(pid){
+  const posts=getPosts().filter(p=>p.id!==pid);savePosts(posts);
+  toast('Post deleted.');renderTimeline();updateHomeStats();
+};
+
+window.sharePost=function(pid){
+  navigator.clipboard&&navigator.clipboard.writeText(`Check out this SkillStamp post: ${window.location.href}#post/${pid}`).then(()=>toast('Link copied to clipboard! 📋'));
+};
+
+function renderTrending(){
+  const freq={};
+  getPosts().forEach(p=>{const tags=p.content.match(/#(\w+)/g)||[];tags.forEach(t=>freq[t]=(freq[t]||0)+1);});
+  const top=Object.entries(freq).sort((a,b)=>b[1]-a[1]).slice(0,8);
+  document.getElementById('trending-skills').innerHTML=top.map(([t,n])=>`<div style="display:flex;justify-content:space-between;font-size:11px;padding:5px 0;border-bottom:1px solid var(--br);cursor:pointer;" onclick="document.getElementById('post-input').value='${t} ';document.getElementById('post-input').focus()"><span style="color:var(--blu);">${t}</span><span style="color:var(--td);">${n} posts</span></div>`).join('');
+}
+
+function renderSuggested(){
+  const users=getAllUsers().filter(u=>u.uid!==ME.uid&&u.role==='freelancer').sort(()=>Math.random()-.5).slice(0,4);
+  document.getElementById('suggested-users').innerHTML=users.map(u=>`<div style="display:flex;align-items:center;gap:9px;margin-bottom:10px;">${avHTML(u,32,'50%')}<div style="flex:1;min-width:0;"><div style="font-family:'Syne',sans-serif;font-weight:600;font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${u.name}</div><div style="font-size:9px;color:var(--td);">${u.category}</div></div><button class="bblu" style="padding:4px 8px;font-size:9px;" onclick="viewProfile('${u.uid}')">View</button></div>`).join('');
+}
+
+function renderMyRepMini(){
+  const el=document.getElementById('my-rep-mini');
+  if(!el)return;
+  el.innerHTML=`<div style="text-align:center;padding:8px 0;"><div style="font-family:'Syne',sans-serif;font-size:32px;font-weight:800;color:var(--pur);line-height:1;">${ME.repPoints||0}</div><div style="font-size:9px;color:var(--td);margin-top:2px;">reputation points</div><div style="margin-top:10px;">${badgeHTML(ME.badgeStatus)}</div><button class="bsm" style="margin-top:10px;width:100%;" onclick="openAIValidate()">🤖 AI Validate Skill</button></div>`;
+}
+
+// ══════════════════════════════════════════════
+//  AI SIMULATION
+// ══════════════════════════════════════════════
+function simulateAIActivity(){
+  const users=getAllUsers().filter(u=>!u.isAdmin&&u.uid!==ME.uid&&u.role==='freelancer');
+  if(!users.length)return;
+  const actor=pick(users);
+  const action=r(0,4);
+  if(action===0){
+    // AI posts
+    const template=pick(POST_TEMPLATES);
+    const posts=getPosts();
+    posts.unshift({id:'p'+Date.now(),uid:actor.uid,userName:actor.name,userTitle:actor.title,userGrad:actor.gradient,userAvatar:actor.avatar||null,content:template(actor),type:'general',likes:r(0,20),liked:false,comments:[],ts:Date.now()});
+    savePosts(posts.slice(0,300));
+    if(document.getElementById('page-timeline').classList.contains('active')) renderTimeline();
+    updateHomeStats();
+  }else if(action===1){
+    // AI endorses me
+    if(ME.skills&&ME.skills.length){
+      const e=getEndorsements();
+      const cmts=['Outstanding work quality!','One of the best I\'ve worked with.','Highly recommend this professional.','Expert-level skills.'];
+      e.unshift({id:'e'+Date.now(),fromUid:actor.uid,fromName:actor.name,fromGrad:actor.gradient,fromAvatar:actor.avatar||null,toUid:ME.uid,skill:pick(ME.skills)||'General',comment:pick(cmts),stars:5,created:Date.now()});
+      saveEndorsements(e);
+      ME.repPoints=(ME.repPoints||0)+5;saveUser(ME);
+      addNotif('🤝',`${actor.name} endorsed you for "${e[0].skill}"! +5 rep pts`);
+      updateHomeStats();
+    }
+  }else if(action===2){
+    // AI messages me
+    const msgs=getMessages();
+    const cid=[ME.uid,actor.uid].sort().join('_');
+    if(!msgs[cid])msgs[cid]={participants:[ME.uid,actor.uid],messages:[]};
+    const msgTemplates=[
+      'Hey! I came across your profile and I\'m really impressed by your work. Would love to connect!',
+      `I have a ${actor.category} project that might interest you. Are you available for a quick chat?`,
+      'Saw your recent SkillStamp post — very insightful! Would love to collaborate sometime.',
+      `Your SkillID profile is outstanding. We're looking for talent like yours at our startup.`
+    ];
+    msgs[cid].messages.push({from:actor.uid,text:pick(msgTemplates),ts:Date.now(),read:false});
+    saveMessages(msgs);
+    updateUnreadBadge();
+    addNotif('💬',`New message from ${actor.name}`);
+  }
+}
+
+// ══════════════════════════════════════════════
+//  TALENT
+// ══════════════════════════════════════════════
+window.filterCat=function(cat,el){activeCat=cat;document.querySelectorAll('#talent-cats .cat').forEach(c=>c.classList.remove('active'));el.classList.add('active');renderTalent();};
+
+window.renderTalent=function(){
+  const search=document.getElementById('talent-search')?.value?.toLowerCase()||'';
+  let users=getAllUsers().filter(u=>u.role==='freelancer');
+  if(activeCat!=='All')users=users.filter(u=>u.category===activeCat);
+  if(search)users=users.filter(u=>u.name.toLowerCase().includes(search)||(u.skills||[]).some(s=>s.toLowerCase().includes(search)));
+  users=users.sort((a,b)=>(b.repPoints||0)-(a.repPoints||0));
+  document.getElementById('talent-count').textContent=`${users.length} verified`;
+  const grid=document.getElementById('tgrid');
+  if(!users.length){grid.innerHTML='<div class="empty">No talent found.</div>';return;}
+  grid.innerHTML=users.slice(0,60).map(u=>talentCard(u)).join('');
+};
+
+function talentCard(u){
+  const isMe=u.uid===ME.uid;
+  const endorse=getEndorsements().filter(e=>e.toUid===u.uid);
+  return `<div class="card card-accent" onclick="viewProfile('${u.uid}')" style="cursor:pointer;">
+    <div style="display:flex;gap:12px;align-items:flex-start;margin-bottom:15px;">
+      ${avHTML(u,52,'10px')}
+      <div style="flex:1;min-width:0;">
+        <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:700;margin-bottom:2px;display:flex;align-items:center;gap:5px;flex-wrap:wrap;">${flag(u.country)} ${u.name}${isMe?'<span style="font-size:8px;background:rgba(232,197,71,.12);border:1px solid rgba(232,197,71,.25);color:var(--gld);padding:1px 5px;border-radius:8px;">YOU</span>':''}</div>
+        <div style="font-size:9px;color:var(--td);margin-bottom:6px;">${u.title||'Digital Professional'}</div>
+        <div style="display:flex;gap:5px;flex-wrap:wrap;">${badgeHTML(u.badgeStatus)}<span style="font-size:9px;color:var(--td);">${CAT_ICONS[u.category]||''} ${u.category}</span></div>
+      </div>
+    </div>
+    <div class="chips" style="margin-bottom:12px;">${(u.skills||[]).slice(0,4).map(s=>`<span class="chip v">${s}</span>`).join('')||'<span style="font-size:9px;color:var(--td);">No skills yet</span>'}</div>
+    <div class="rep-strip">
+      <div><div class="stars">${u.repPoints>0?'★'.repeat(Math.min(5,Math.round(u.score))):'—'}</div><div style="font-size:8px;color:var(--td);">Rating</div></div>
+      <div class="rep-num">${u.score>0?u.score.toFixed(1):'New'}</div>
+      <div style="margin-left:7px;"><div class="rep-pts">${u.repPoints} pts</div><div style="font-size:8px;color:var(--td);">Reputation</div></div>
+      <div style="margin-left:auto;text-align:right;"><div style="font-family:'Syne',sans-serif;font-weight:700;font-size:12px;">${endorse.length}</div><div style="font-size:8px;color:var(--td);">Endorsements</div></div>
+    </div>
+    <div class="chain" style="margin-top:10px;"><div class="cdot"></div><div class="chash">${u.skillId}</div></div>
+    ${!isMe?`<div style="display:flex;gap:6px;margin-top:10px;">
+      <button class="bsm" onclick="event.stopPropagation();openMsg('${u.uid}')">💬 Message</button>
+      <button class="bgrn" onclick="event.stopPropagation();openEndorse('${u.uid}')">🤝 Endorse</button>
+      <button class="b2sm" onclick="event.stopPropagation();viewProfile('${u.uid}')">Profile</button>
+    </div>`:''}
+  </div>`;
+}
+
+// ══════════════════════════════════════════════
+//  GIGS
+// ══════════════════════════════════════════════
+window.filterGigCat=function(cat,el){activeGigCat=cat;document.querySelectorAll('#gig-cats .cat').forEach(c=>c.classList.remove('active'));el.classList.add('active');renderGigs();};
+
+function renderGigs(){
+  let gigs=getGigs();
+  if(activeGigCat!=='All')gigs=gigs.filter(g=>g.category===activeGigCat);
+  document.getElementById('gigs-count').textContent=`${gigs.length} open`;
+  const list=document.getElementById('gig-list');
+  if(!gigs.length){list.innerHTML='<div class="empty">No gigs. Post one!</div>';return;}
+  list.innerHTML=gigs.slice(0,40).map((g,i)=>`<div class="gig-item" onclick="showGigDetail('${g.id}')">
+    <div class="gig-icon" style="background:${GIG_COLS[i%GIG_COLS.length]}">${GIG_ICONS[i%GIG_ICONS.length]}</div>
+    <div style="flex:1;min-width:0;">
+      <div class="gig-title">${g.title}</div>
+      <div style="font-size:10px;color:var(--td);">${g.posterName} · ${g.category} · ${timeAgo(g.created)}</div>
+      <div style="margin-top:4px;">${(g.skills||[]).map(s=>`<span style="display:inline-block;font-size:9px;background:rgba(232,197,71,.07);border:1px solid rgba(232,197,71,.2);color:var(--gld);padding:1px 6px;border-radius:3px;margin:2px;">${s}</span>`).join('')}</div>
+    </div>
+    <div style="text-align:right;flex-shrink:0;"><div class="gig-pay">${g.pay}</div><div style="font-size:9px;color:var(--td);text-transform:uppercase;letter-spacing:.06em;margin-top:2px;">${g.type}</div></div>
+  </div>`).join('');
+}
+
+window.openPostGig=function(){
+  const SKILLS=['Python','React','Node.js','Data Science','UI/UX','Solidity','AWS','Flutter','SQL','Machine Learning','Figma','TypeScript','Django','Next.js','Marketing','SEO','Content','Analytics','Go','Rust'];
+  setModal(`<button class="mclose" onclick="closeModal()">✕</button>
+    <h3>Post a Gig</h3><p>Find verified SkillStamp talent for your project</p>
+    <div class="fg"><label class="fl">Title *</label><input class="fi" id="pg-t" placeholder="e.g. Build a Python data pipeline"></div>
+    <div class="fg"><label class="fl">Description</label><textarea class="fi" id="pg-d" rows="3" placeholder="Describe scope and deliverables…" style="resize:vertical;"></textarea></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:9px;">
+      <div class="fg"><label class="fl">Budget *</label><input class="fi" id="pg-p" placeholder="$1,500"></div>
+      <div class="fg"><label class="fl">Type</label><select class="fi" id="pg-ty"><option>Contract</option><option>Full-time Remote</option><option>Project</option><option>Part-time</option></select></div>
+      <div class="fg"><label class="fl">Category</label><select class="fi" id="pg-c"><option>Tech</option><option>Design</option><option>Writing</option><option>Marketing</option><option>Blockchain</option><option>Data</option></select></div>
+    </div>
+    <div class="fg"><label class="fl">Required Skills</label>
+      <div style="display:flex;flex-wrap:wrap;gap:5px;margin-top:4px;" id="pg-skills">
+        ${SKILLS.map(s=>`<span style="padding:3px 9px;background:var(--s2);border:1px solid var(--br);border-radius:4px;font-size:10px;color:var(--td);cursor:pointer;" onclick="this.classList.toggle('on');this.style.borderColor=this.classList.contains('on')?'rgba(232,197,71,.5)':'var(--br)';this.style.color=this.classList.contains('on')?'var(--gld)':'var(--td)';" data-s="${s}">${s}</span>`).join('')}
+      </div>
+    </div>
+    <button class="btn" onclick="submitGig()">Post Gig →</button>`);
+};
+
+window.submitGig=function(){
+  const title=document.getElementById('pg-t').value.trim();
+  const desc=document.getElementById('pg-d').value.trim();
+  const pay=document.getElementById('pg-p').value.trim();
+  const type=document.getElementById('pg-ty').value;
+  const category=document.getElementById('pg-c').value;
+  const skills=[...document.querySelectorAll('#pg-skills [data-s].on')].map(el=>el.dataset.s);
+  if(!title||!pay){toast('Please add title and budget.','bad');return;}
+  const gigs=getGigs();
+  gigs.unshift({id:'g'+Date.now(),title,description:desc,pay,type,category,skills,posterUid:ME.uid,posterName:ME.name,created:Date.now()});
+  saveGigs(gigs);closeModal();toast('Gig posted! 🎉');renderGigs();updateHomeStats();
+};
+
+window.showGigDetail=function(gid){
+  const g=getGigs().find(x=>x.id===gid);if(!g)return;
+  const fee=(parseFloat((g.pay||'0').replace(/[^0-9.]/g,''))*0.12).toFixed(0);
+  const net=(parseFloat((g.pay||'0').replace(/[^0-9.]/g,''))*0.88).toFixed(0);
+  const cur=(g.pay||'$').match(/[$£€₦]/)?.[0]||'$';
+  const isOwn=g.posterUid===ME.uid;
+  setModal(`<button class="mclose" onclick="closeModal()">✕</button>
+    <div style="font-size:24px;margin-bottom:9px;">${CAT_ICONS[g.category]||'💼'}</div>
+    <h3>${g.title}</h3><p>${g.posterName} · ${g.category} · ${g.type} · ${timeAgo(g.created)}</p>
+    ${g.description?`<div style="font-size:11px;color:var(--td);line-height:1.75;margin-bottom:13px;padding:12px;background:var(--s2);border-radius:6px;">${g.description}</div>`:''}
+    <div style="margin-bottom:14px;">${(g.skills||[]).map(s=>`<span style="display:inline-block;font-size:9px;background:rgba(232,197,71,.07);border:1px solid rgba(232,197,71,.2);color:var(--gld);padding:2px 8px;border-radius:3px;margin:2px;">${s}</span>`).join('')}</div>
+    <div class="escrow">
+      <div style="font-family:'Syne',sans-serif;font-weight:600;font-size:11px;margin-bottom:9px;">💰 Escrow Breakdown</div>
+      <div class="erow"><span style="color:var(--td);">Contract Value</span><span>${g.pay}</span></div>
+      <div class="erow"><span style="color:var(--td);">SkillStamp Fee (12%)</span><span style="color:var(--acc);">-${cur}${fee}</span></div>
+      <div class="erow" style="border-top:1px solid var(--br);padding-top:7px;margin-top:4px;font-family:'Syne',sans-serif;font-weight:700;">
+        <span>Your Net Payout</span><span style="color:var(--grn);">${cur}${net}</span>
+      </div>
+    </div>
+    ${!isOwn
+      ?`<button class="btn" style="margin-top:14px;" onclick="applyGig('${gid}','${g.title}','${g.posterUid}')">Apply with SkillID →</button>`
+      :`<div style="margin-top:12px;display:flex;gap:7px;"><button class="bacc" onclick="deleteGig('${gid}')">Delete Gig</button></div>`}`);
+};
+
+window.applyGig=function(gid,title,posterUid){
+  ME.repPoints=(ME.repPoints||0)+5;saveUser(ME);
+  sendAutoMsg(posterUid,`Hi! I'd like to apply for "${title}". My SkillID is ${ME.skillId}. ${(ME.skills||[]).length?'Skills: '+ME.skills.slice(0,3).join(', ')+'.':''} Let's connect!`);
+  // Add to wallet as pending
+  if(!ME.wallet)ME.wallet={balance:0,pending:0,earned:0,transactions:[]};
+  setModal(`<div class="sick">✓</div>
+    <h3>Application Submitted!</h3>
+    <p>SkillID verified. Message sent to employer. +5 rep pts added!</p>
+    <div class="chain"><div class="cdot"></div><div class="chash">TX: 0x${Math.random().toString(16).slice(2,18).toUpperCase()}</div></div>
+    <button class="btn" style="margin-top:14px;" onclick="closeModal();showPage('messages')">View Messages →</button>`);
+};
+
+window.deleteGig=function(gid){
+  if(!confirm('Delete?'))return;
+  saveGigs(getGigs().filter(g=>g.id!==gid));closeModal();toast('Deleted.');renderGigs();
+};
+
+// ══════════════════════════════════════════════
+//  WALLET
+// ══════════════════════════════════════════════
+function renderWallet(){
+  if(!ME.wallet)ME.wallet={balance:0,pending:0,earned:0,transactions:[]};
+  const w=ME.wallet;
+  document.getElementById('w-balance').textContent='$'+w.balance.toLocaleString();
+  document.getElementById('w-earned').textContent='$'+w.earned.toLocaleString();
+  document.getElementById('w-pending').textContent='$'+(w.pending||0).toLocaleString();
+  document.getElementById('w-address').textContent=ME.skillId;
+  const txList=document.getElementById('tx-list');
+  if(!w.transactions||!w.transactions.length){txList.innerHTML='<div class="empty" style="padding:20px;">No transactions yet. Apply to gigs to start earning!</div>';return;}
+  txList.innerHTML=w.transactions.map(tx=>`<div class="tx-row">
+    <div class="tx-icon" style="background:${tx.type==='in'?'rgba(74,222,128,.12)':'rgba(255,107,53,.12)'};">${tx.type==='in'?'📥':'📤'}</div>
+    <div style="flex:1;"><div style="font-family:'Syne',sans-serif;font-weight:600;font-size:12px;">${tx.desc}</div><div style="font-size:10px;color:var(--td);">${tx.from||'SkillStamp'} · ${timeAgo(tx.ts)}</div></div>
+    <div class="tx-amount ${tx.type==='in'?'tx-in':'tx-out'}">${tx.type==='in'?'+':'-'}$${tx.amount.toLocaleString()}</div>
+  </div>`).join('');
+  document.getElementById('escrow-list').innerHTML='<div style="font-size:11px;color:var(--td);padding:12px;">No active escrow contracts. Apply to gigs to create one.</div>';
+}
+
+window.openReceive=function(){
+  setModal(`<button class="mclose" onclick="closeModal()">✕</button>
+    <h3>📥 Receive Payment</h3>
+    <p>Share your SkillID or QR code with clients to receive payments directly.</p>
+    <div style="background:var(--s2);border:1px solid var(--br);border-radius:var(--r);padding:16px;text-align:center;margin-bottom:16px;">
+      <div style="font-size:11px;color:var(--td);margin-bottom:6px;">Your Wallet Address</div>
+      <div style="font-family:'DM Mono',monospace;font-size:16px;color:var(--gld);letter-spacing:.1em;">${ME.skillId}</div>
+    </div>
+    <div id="receive-qr" style="display:flex;justify-content:center;margin-bottom:16px;"><div style="background:white;padding:12px;border-radius:8px;" id="rqr"></div></div>
+    <button class="btn" onclick="navigator.clipboard&&navigator.clipboard.writeText('${ME.skillId}').then(()=>toast('Wallet address copied! 📋'))">Copy Wallet Address</button>`);
+  setTimeout(()=>{try{new QRCode(document.getElementById('rqr'),{text:`SkillStamp:${ME.skillId}`,width:150,height:150,colorDark:'#000',colorLight:'#fff'});}catch(e){}},200);
+};
+
+window.openSend=function(){
+  const users=getAllUsers().filter(u=>u.uid!==ME.uid).slice(0,20);
+  setModal(`<button class="mclose" onclick="closeModal()">✕</button>
+    <h3>📤 Send Payment</h3><p>Send funds to another SkillStamp member.</p>
+    <div class="fg"><label class="fl">Recipient SkillID or Name</label>
+      <select class="fi" id="send-to">
+        ${users.map(u=>`<option value="${u.uid}">${u.name} — ${u.skillId}</option>`).join('')}
+      </select>
+    </div>
+    <div class="fg"><label class="fl">Amount ($)</label><input class="fi" id="send-amt" type="number" placeholder="500" min="1"></div>
+    <div class="fg"><label class="fl">Note</label><input class="fi" id="send-note" placeholder="Payment for project…"></div>
+    <button class="btn" onclick="processSend()">Send Payment →</button>`);
+};
+
+window.processSend=function(){
+  const toUid=document.getElementById('send-to').value;
+  const amt=parseFloat(document.getElementById('send-amt').value||0);
+  const note=document.getElementById('send-note').value||'Payment';
+  if(!amt||amt<=0){toast('Enter a valid amount.','bad');return;}
+  if((ME.wallet?.balance||0)<amt){toast('Insufficient balance.','bad');return;}
+  const toUser=getUser(toUid);if(!toUser)return;
+  if(!ME.wallet)ME.wallet={balance:0,pending:0,earned:0,transactions:[]};
+  ME.wallet.balance-=amt;
+  ME.wallet.transactions.unshift({id:'t'+Date.now(),type:'out',amount:amt,from:toUser.name,desc:note,ts:Date.now()});
+  saveUser(ME);
+  if(!toUser.wallet)toUser.wallet={balance:0,pending:0,earned:0,transactions:[]};
+  toUser.wallet.balance+=amt*0.88;
+  toUser.wallet.earned+=amt*0.88;
+  toUser.wallet.transactions.unshift({id:'t'+Date.now(),type:'in',amount:amt*0.88,from:ME.name,desc:note,ts:Date.now()});
+  saveUser(toUser);
+  closeModal();toast(`Sent $${amt} to ${toUser.name}! ✅`);renderWallet();
+};
+
+window.openWithdraw=function(){
+  setModal(`<button class="mclose" onclick="closeModal()">✕</button>
+    <h3>🏦 Withdraw Funds</h3><p>Withdraw to your bank account or mobile money.</p>
+    <div class="fg"><label class="fl">Withdrawal Method</label>
+      <select class="fi" id="wd-method"><option>Bank Transfer (NGN)</option><option>Mobile Money (M-Pesa)</option><option>Bank Transfer (GHS)</option><option>PayPal</option><option>Wise</option></select>
+    </div>
+    <div class="fg"><label class="fl">Amount ($)</label><input class="fi" id="wd-amt" type="number" placeholder="${Math.floor((ME.wallet?.balance||0)*0.9)}" min="50"></div>
+    <div class="fg"><label class="fl">Account Number / Phone</label><input class="fi" id="wd-acct" placeholder="0800 000 0000"></div>
+    <div style="padding:11px;background:rgba(232,197,71,.05);border:1px solid rgba(232,197,71,.18);border-radius:6px;font-size:10px;color:var(--td);margin-bottom:14px;">
+      ⏱ Processing time: 1-3 business days · Min withdrawal: $50 · Fee: 2.5%
+    </div>
+    <button class="btn" onclick="processWithdraw()">Request Withdrawal →</button>`);
+};
+
+window.processWithdraw=function(){
+  const amt=parseFloat(document.getElementById('wd-amt').value||0);
+  if(!amt||amt<50){toast('Minimum withdrawal is $50.','bad');return;}
+  if((ME.wallet?.balance||0)<amt){toast('Insufficient balance.','bad');return;}
+  if(!ME.wallet)ME.wallet={balance:0,pending:0,earned:0,transactions:[]};
+  ME.wallet.balance-=amt;
+  ME.wallet.transactions.unshift({id:'t'+Date.now(),type:'out',amount:amt,from:'Bank Withdrawal',desc:'Withdrawal request',ts:Date.now()});
+  saveUser(ME);closeModal();
+  toast(`Withdrawal of $${amt} submitted! You'll receive funds in 1-3 days. 🏦`);renderWallet();
+};
+
+window.openTopUp=function(){
+  setModal(`<button class="mclose" onclick="closeModal()">✕</button>
+    <h3>➕ Top Up Wallet</h3><p>Add funds to your SkillStamp wallet for escrow payments.</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;">
+      ${[100,250,500,1000,2000,5000].map(a=>`<div style="padding:14px;background:var(--s2);border:1px solid var(--br);border-radius:var(--r);text-align:center;cursor:pointer;transition:all .2s;font-family:'Syne',sans-serif;font-weight:700;" onclick="this.style.borderColor='var(--gld)';this.style.background='rgba(232,197,71,.07)';document.getElementById('topup-amt').value=${a}" onmouseover="this.style.borderColor='rgba(232,197,71,.4)'" onmouseout="">$${a}</div>`).join('')}
+    </div>
+    <div class="fg"><label class="fl">Or enter custom amount</label><input class="fi" id="topup-amt" type="number" placeholder="500"></div>
+    <button class="btn" onclick="processTopUp()">Add Funds →</button>`);
+};
+
+window.processTopUp=function(){
+  const amt=parseFloat(document.getElementById('topup-amt').value||0);
+  if(!amt||amt<=0){toast('Enter a valid amount.','bad');return;}
+  if(!ME.wallet)ME.wallet={balance:0,pending:0,earned:0,transactions:[]};
+  ME.wallet.balance+=amt;
+  ME.wallet.transactions.unshift({id:'t'+Date.now(),type:'in',amount:amt,from:'Top Up',desc:'Wallet top up',ts:Date.now()});
+  saveUser(ME);closeModal();
+  toast(`$${amt} added to your wallet! 💳`);renderWallet();
+};
+
+// ══════════════════════════════════════════════
+//  MESSAGES
+// ══════════════════════════════════════════════
+function convId(a,b){return [a,b].sort().join('_');}
+
+function sendAutoMsg(toUid,text){
+  const msgs=getMessages();
+  const cid=convId(ME.uid,toUid);
+  if(!msgs[cid])msgs[cid]={participants:[ME.uid,toUid],messages:[]};
+  msgs[cid].messages.push({from:ME.uid,text,ts:Date.now(),read:false});
+  saveMessages(msgs);updateUnreadBadge();
+}
+
+function updateUnreadBadge(){
+  const msgs=getMessages();let total=0;
+  Object.values(msgs).forEach(c=>{if(c.participants?.includes(ME.uid))c.messages.forEach(m=>{if(m.from!==ME.uid&&!m.read)total++;});});
+  const b=document.getElementById('ubadge');
+  if(total>0){b.textContent=total;b.style.display='';}else b.style.display='none';
+}
+
+function renderConvList(){
+  const msgs=getMessages();
+  const myConvs=Object.entries(msgs).filter(([_,c])=>c.participants?.includes(ME.uid));
+  const list=document.getElementById('conv-list');
+  if(!myConvs.length){list.innerHTML='<div style="padding:18px;color:var(--td);font-size:11px;text-align:center;">No conversations yet.<br>Message someone from the Talent page.</div>';return;}
+  list.innerHTML=myConvs.map(([cid,c])=>{
+    const otherId=c.participants.find(p=>p!==ME.uid);
+    const other=getUser(otherId)||{name:'Unknown',gradient:'#888'};
+    const last=c.messages[c.messages.length-1];
+    const unread=c.messages.filter(m=>m.from!==ME.uid&&!m.read).length;
+    const avStyle=`width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,${other.gradient||'#888'},${other.gradient||'#888'}88);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:700;font-size:12px;color:#000;flex-shrink:0;overflow:hidden;`;
+    const avContent=other.avatar?`<img src="${other.avatar}" style="width:100%;height:100%;object-fit:cover;">`:initials(other.name);
+    return `<div class="conv ${activeConv===cid?'active':''}" onclick="openConv('${cid}')">
+      <div style="${avStyle}">${avContent}</div>
+      <div style="flex:1;min-width:0;">
+        <div style="font-family:'Syne',sans-serif;font-weight:600;font-size:11px;">${other.name}</div>
+        <div style="font-size:9px;color:var(--td);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:1px;">${last?last.text.slice(0,30)+'…':''}</div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:3px;">
+        <div style="font-size:8px;color:var(--td);">${last?timeAgo(last.ts):''}</div>
+        ${unread?`<div class="unread-dot">${unread}</div>`:''}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+window.openConv=function(cid){
+  activeConv=cid;
+  const msgs=getMessages();const c=msgs[cid];if(!c)return;
+  c.messages.forEach(m=>{if(m.from!==ME.uid)m.read=true;});
+  saveMessages(msgs);updateUnreadBadge();
+  const otherId=c.participants.find(p=>p!==ME.uid);
+  const other=getUser(otherId)||{name:'Unknown',gradient:'#888',title:'',country:''};
+  const avStyle=`width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,${other.gradient||'#888'},${other.gradient||'#888'}88);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:700;font-size:12px;color:#000;flex-shrink:0;overflow:hidden;`;
+  const avContent=other.avatar?`<img src="${other.avatar}" style="width:100%;height:100%;object-fit:cover;">`:initials(other.name);
+  const main=document.getElementById('msg-main');
+  main.innerHTML=`
+    <div style="padding:13px 20px;border-bottom:1px solid var(--br);display:flex;align-items:center;gap:10px;flex-shrink:0;">
+      <div style="${avStyle}" onclick="viewProfile('${other.uid}')" style="cursor:pointer;">${avContent}</div>
+      <div><div style="font-family:'Syne',sans-serif;font-weight:700;font-size:13px;">${other.name}</div><div style="font-size:9px;color:var(--td);">${other.title||''} · ${flag(other.country)} ${other.country||''}</div></div>
+      <button class="b2sm" style="margin-left:auto;" onclick="viewProfile('${other.uid}')">View Profile</button>
+    </div>
+    <div style="flex:1;overflow-y:auto;padding:18px;display:flex;flex-direction:column;gap:9px;" id="msg-body">
+      ${c.messages.map(m=>`<div style="display:flex;flex-direction:column;${m.from===ME.uid?'align-items:flex-end':''}"><div class="bubble ${m.from===ME.uid?'me':'them'}">${m.text}<div class="btime">${timeAgo(m.ts)}</div></div></div>`).join('')||'<div style="text-align:center;color:var(--td);font-size:11px;margin:auto;">Say hello! 👋</div>'}
+    </div>
+    <div style="padding:13px 20px;border-top:1px solid var(--br);display:flex;gap:9px;align-items:flex-end;flex-shrink:0;">
+      <textarea class="fi" id="msg-input" rows="1" placeholder="Type a message…" style="resize:none;max-height:80px;" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendMsg('${cid}','${otherId}');}"></textarea>
+      <button class="bsm" onclick="sendMsg('${cid}','${otherId}')">Send →</button>
+    </div>`;
+  document.getElementById('msg-body').scrollTop=99999;
+  renderConvList();
+};
+
+window.sendMsg=function(cid,otherId){
+  const inp=document.getElementById('msg-input');const text=inp.value.trim();if(!text)return;inp.value='';
+  const msgs=getMessages();
+  if(!msgs[cid])msgs[cid]={participants:[ME.uid,otherId],messages:[]};
+  msgs[cid].messages.push({from:ME.uid,text,ts:Date.now(),read:false});
+  saveMessages(msgs);openConv(cid);
+};
+
+window.openMsg=function(uid){
+  const cid=convId(ME.uid,uid);
+  const msgs=getMessages();if(!msgs[cid])msgs[cid]={participants:[ME.uid,uid],messages:[]};
+  saveMessages(msgs);showPage('messages');setTimeout(()=>openConv(cid),100);
+};
+
+window.openNewMsg=function(){
+  const users=getAllUsers().filter(u=>u.uid!==ME.uid).slice(0,30);
+  setModal(`<button class="mclose" onclick="closeModal()">✕</button>
+    <h3>New Message</h3><p>Choose who to message:</p>
+    <input class="fi" id="nm-search" placeholder="Search users…" style="margin-bottom:10px;" oninput="filterMsgSearch(this.value)">
+    <div style="display:flex;flex-direction:column;gap:6px;max-height:360px;overflow-y:auto;" id="nm-list">
+      ${users.map(u=>`<div style="display:flex;align-items:center;gap:9px;padding:10px;background:var(--s2);border:1px solid var(--br);border-radius:var(--r);cursor:pointer;" onclick="closeModal();openMsg('${u.uid}')">${avHTML(u,34,'50%')}<div><div style="font-family:'Syne',sans-serif;font-weight:600;font-size:11px;">${u.name}</div><div style="font-size:9px;color:var(--td);">${u.title||u.role}</div></div>${badgeHTML(u.badgeStatus)}</div>`).join('')}
+    </div>`);
+};
+window.filterMsgSearch=function(q){
+  const users=getAllUsers().filter(u=>u.uid!==ME.uid&&u.name.toLowerCase().includes(q.toLowerCase())).slice(0,20);
+  document.getElementById('nm-list').innerHTML=users.map(u=>`<div style="display:flex;align-items:center;gap:9px;padding:10px;background:var(--s2);border:1px solid var(--br);border-radius:var(--r);cursor:pointer;" onclick="closeModal();openMsg('${u.uid}')">${avHTML(u,34,'50%')}<div><div style="font-family:'Syne',sans-serif;font-weight:600;font-size:11px;">${u.name}</div><div style="font-size:9px;color:var(--td);">${u.title||u.role}</div></div>${badgeHTML(u.badgeStatus)}</div>`).join('');
+};
+
+// ══════════════════════════════════════════════
+//  ENDORSEMENTS
+// ══════════════════════════════════════════════
+window.openEndorse=function(uid){
+  const u=getUser(uid);if(!u)return;
+  const myPrev=getEndorsements().filter(e=>e.fromUid===ME.uid&&e.toUid===uid);
+  setModal(`<button class="mclose" onclick="closeModal()">✕</button>
+    <h3>Endorse ${u.name.split(' ')[0]}</h3>
+    <p>Endorsements give +5 reputation points to ${u.name.split(' ')[0]} and +2 to you.</p>
+    ${myPrev.length?`<div style="padding:9px;background:rgba(232,197,71,.05);border:1px solid rgba(232,197,71,.18);border-radius:6px;font-size:10px;color:var(--gld);margin-bottom:13px;">You've already endorsed: ${myPrev.map(e=>e.skill).join(', ')}</div>`:''}
+    <div class="fg"><label class="fl">Skill to Endorse</label>
+      <select class="fi" id="en-skill">${(u.skills||['General Skills']).map(s=>`<option>${s}</option>`).join('')}</select>
+    </div>
+    <div class="fg"><label class="fl">Your Feedback</label><textarea class="fi" id="en-comment" rows="3" placeholder="Describe your experience…" style="resize:vertical;"></textarea></div>
+    <div class="fg"><label class="fl">Rating</label>
+      <div style="display:flex;gap:8px;">${[5,4,3,2,1].map(n=>`<label style="display:flex;align-items:center;gap:3px;cursor:pointer;font-size:11px;"><input type="radio" name="star" value="${n}" ${n===5?'checked':''}> ${'★'.repeat(n)}</label>`).join('')}</div>
+    </div>
+    <button class="btn" onclick="submitEndorse('${uid}')">Submit Endorsement →</button>`);
+};
+
+window.submitEndorse=function(uid){
+  const skill=document.getElementById('en-skill').value;
+  const comment=document.getElementById('en-comment').value.trim();
+  const stars=parseInt(document.querySelector('input[name="star"]:checked')?.value||5);
+  if(!comment){toast('Please write a comment.','bad');return;}
+  const e={id:'e'+Date.now(),fromUid:ME.uid,fromName:ME.name,fromGrad:ME.gradient,fromAvatar:ME.avatar||null,toUid:uid,skill,comment,stars,created:Date.now()};
+  const endorsements=getEndorsements();endorsements.unshift(e);saveEndorsements(endorsements);
+  const u=getUser(uid);if(u){u.repPoints=(u.repPoints||0)+5;saveUser(u);}
+  ME.repPoints=(ME.repPoints||0)+2;saveUser(ME);
+  addNotif('🤝',`You endorsed ${u?.name?.split(' ')[0]} for "${skill}" — +2 pts for you!`);
+  closeModal();toast(`Endorsed! ${u?.name?.split(' ')[0]} earned +5 rep pts 🤝`);
+  updateHomeStats();
+};
+
+// ══════════════════════════════════════════════
+//  AI SKILL VALIDATION
+// ══════════════════════════════════════════════
+window.openAIValidate=function(){
+  setModal(`<button class="mclose" onclick="closeModal()">✕</button>
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;"><div style="font-size:24px;">🤖</div><div><h3>AI Skill Validation</h3><p style="margin:0;">SkillStamp Neural Engine v2.1</p></div></div>
+    <div class="fg"><label class="fl">Skill to Validate</label><input class="fi" id="ai-skill" placeholder="e.g. Python, Figma, Solidity…"></div>
+    <div class="fg"><label class="fl">Experience Level</label>
+      <select class="fi" id="ai-exp"><option value="1">Beginner (0-1 yrs)</option><option value="2">Intermediate (1-3 yrs)</option><option value="3" selected>Advanced (3-5 yrs)</option><option value="4">Expert (5-10 yrs)</option><option value="5">Master (10+ yrs)</option></select>
+    </div>
+    <button class="btn" onclick="runAIVal()">Run AI Validation →</button>`);
+};
+
+window.runAIVal=function(){
+  const skill=document.getElementById('ai-skill').value.trim();
+  if(!skill){toast('Enter a skill.','bad');return;}
+  const exp=parseInt(document.getElementById('ai-exp').value);
+  document.getElementById('mcontent').innerHTML=`<div style="text-align:center;padding:28px;">
+    <div style="font-size:30px;margin-bottom:12px;">🤖</div>
+    <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:13px;margin-bottom:6px;">Analyzing "${skill}"…</div>
+    <div style="font-size:10px;color:var(--td);margin-bottom:18px;">Cross-referencing 14,832 verified profiles</div>
+    <div style="height:6px;background:var(--br);border-radius:6px;max-width:280px;margin:0 auto;overflow:hidden;"><div id="aiprog" style="height:100%;width:0%;background:linear-gradient(90deg,var(--gld),var(--acc));border-radius:6px;transition:width 1.5s ease;"></div></div>
+  </div>`;
+  setTimeout(()=>document.getElementById('aiprog').style.width='100%',100);
+  setTimeout(()=>{
+    const score=Math.min(95,45+(exp*9)+Math.random()*8);const sc=Math.round(score);
+    const status=sc>=80?'verified':sc>=60?'review':'beginner';
+    const color=sc>=80?'var(--grn)':sc>=60?'var(--gld)':'var(--acc)';
+    document.getElementById('mcontent').innerHTML=`<button class="mclose" onclick="closeModal()">✕</button>
+      <div style="display:flex;align-items:center;gap:16px;margin-bottom:18px;">
+        <div style="width:76px;height:76px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:22px;border:3px solid ${color};color:${color};flex-shrink:0;">${sc}</div>
+        <div><div style="font-family:'Syne',sans-serif;font-weight:800;font-size:17px;">SkillMatch™ Score</div><div style="font-size:10px;color:var(--td);margin-top:2px;">for "${skill}"</div><div style="margin-top:7px;">${badgeHTML(status)}</div></div>
+      </div>
+      ${[['Proficiency',sc,color],['Market Demand',Math.min(95,sc+10),'var(--blu)'],['Salary Potential',sc,'var(--gld)']].map(([l,v,c])=>`<div style="margin-bottom:11px;"><div style="display:flex;justify-content:space-between;font-size:10px;margin-bottom:3px;"><span>${l}</span><span style="color:${c};font-weight:700;">${l==='Salary Potential'?'$'+(v*450+15000).toLocaleString()+'/yr':v+'/100'}</span></div><div style="height:4px;background:var(--br);border-radius:4px;overflow:hidden;"><div style="height:100%;width:${v}%;background:${c};border-radius:4px;transition:width 1.2s ease;"></div></div></div>`).join('')}
+      <div style="padding:12px;background:var(--s2);border-radius:6px;font-size:10px;color:var(--td);line-height:1.75;margin-bottom:14px;">
+        AI Analysis: ${sc>=80?'Expert-level':'Intermediate'} competency detected. Market demand is ${sc>=80?'Very High':'High'} in African fintech & techstartups.
+      </div>
+      <button class="btn" onclick="addValSkill('${skill}','${status}')">Add to My Profile (+10 pts) →</button>`;
+  },2000);
+};
+
+window.addValSkill=function(skill,status){
+  if(!ME.skills)ME.skills=[];
+  if(!ME.skills.includes(skill))ME.skills.push(skill);
+  ME.repPoints=(ME.repPoints||0)+10;if(status==='verified'&&ME.badgeStatus!=='verified')ME.badgeStatus='review';
+  saveUser(ME);
+  const pending=getPending();
+  pending.push({id:'p'+Date.now(),uid:ME.uid,userName:ME.name,skill,category:ME.category,evidence:'AI Validation',submitted:Date.now(),status:'pending'});
+  savePending(pending);
+  closeModal();toast(`"${skill}" added! +10 pts. Submitted for admin review 🎉`);
+  if(document.getElementById('page-myprofile').classList.contains('active'))renderMyProfile();
+};
+
+// ══════════════════════════════════════════════
+//  PROFILES
+// ══════════════════════════════════════════════
+window.viewProfile=function(uid){
+  if(uid===ME.uid){showPage('myprofile');return;}
+  const u=getUser(uid);if(!u)return;
+  document.getElementById('viewprofile-content').innerHTML=buildProfile(u,false);
+  renderPkgInto('basic','viewpkg-body');
+  showPage('viewprofile');
+};
+
+function renderMyProfile(){
+  ME=getUser(ME.uid)||ME;
+  document.getElementById('myprofile-content').innerHTML=buildProfile(ME,true);
+  renderPkgInto('basic','mypkg-body');
+}
+
+function buildProfile(u,isOwn){
+  const endorsements=getEndorsements().filter(e=>e.toUid===u.uid);
+  const myPosts=getPosts().filter(p=>p.uid===u.uid);
+  const rankPos=getAllUsers().filter(x=>x.role==='freelancer').sort((a,b)=>(b.repPoints||0)-(a.repPoints||0)).findIndex(x=>x.uid===u.uid)+1;
+  const PROF_SKILLS=(u.skills||[]).slice(0,6);
+  return `
+  <div class="pbanner"></div>
+  <div class="playout">
+    <div>
+      ${isOwn?`<div class="skillid-card" style="margin-bottom:16px;">
+        <div style="font-size:9px;color:var(--td);text-transform:uppercase;letter-spacing:.12em;margin-bottom:3px;">SkillStamp Verified Identity</div>
+        <div class="sid-num">${u.skillId}</div>
+        <div style="display:flex;gap:18px;margin-top:14px;position:relative;z-index:1;">
+          ${[['Name',u.name],['Country',flag(u.country)+' '+u.country],['Role',u.role],['Category',CAT_ICONS[u.category]+' '+u.category]].map(([l,v])=>`<div style="font-size:9px;color:var(--td);"><span style="font-family:'Syne',sans-serif;font-weight:700;font-size:11px;color:var(--tx);display:block;margin-bottom:1px;">${v}</span>${l}</div>`).join('')}
+        </div>
+      </div>`:''}
+      <div class="pid card-accent">
+        <div class="p-top">
+          <div class="p-big-av" style="background:linear-gradient(135deg,${u.gradient||'#888'},${u.gradient||'#888'}88);" ${isOwn?'onclick="openChangePhoto()" title="Change photo"':''}>
+            ${u.avatar?`<img src="${u.avatar}" style="width:100%;height:100%;object-fit:cover;">`:initials(u.name)}
+            ${isOwn?'<div class="av-overlay">📸 Change</div>':''}
+            <div class="online-dot"></div>
+          </div>
+          <div style="flex:1;">
+            <div class="p-name">${u.name}
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="color:var(--gld);flex-shrink:0;"><path d="M9 12l2 2 4-4M21 12a9 9 0 11-18 0 9 9 0 0118 0z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              ${badgeHTML(u.badgeStatus)}
+            </div>
+            <div class="p-title">${u.title||'Digital Professional'} · ${flag(u.country)} ${u.country}</div>
+            <div class="pmeta">
+              <span class="mpill">${CAT_ICONS[u.category]||'🌐'} ${u.category}</span>
+              <span class="mpill">🏆 Rank #${rankPos>0?rankPos:'—'}</span>
+              <span class="mpill" style="border-color:rgba(167,139,250,.3);color:var(--pur);">⚡ ${u.repPoints||0} rep pts</span>
+              <span class="mpill">${myPosts.length} posts</span>
+            </div>
+            <div class="vbadge">✓ SkillID: ${u.skillId}</div>
+          </div>
+        </div>
+        <div class="pstats">
+          <div class="pstat"><div class="psval" style="color:var(--gld);">${u.score>0?u.score.toFixed(1):'New'}</div><div class="pslbl">Rating</div></div>
+          <div class="pstat"><div class="psval">${u.gigsCount||0}</div><div class="pslbl">Gigs</div></div>
+          <div class="pstat"><div class="psval" style="color:var(--pur);">${u.repPoints||0}</div><div class="pslbl">Rep Pts</div></div>
+          <div class="pstat"><div class="psval" style="color:var(--grn);">$${(u.earned||0).toLocaleString()}</div><div class="pslbl">Earned</div></div>
+        </div>
+        <div class="chain"><div class="cdot"></div><div class="chash">On-Chain: ${u.skillId} · Block #1,${r(800,999)},${r(100,999)}</div></div>
+        ${isOwn?`<div style="display:flex;gap:7px;margin-top:13px;flex-wrap:wrap;">
+          <button class="bsm" onclick="openEditProfile()">✏️ Edit Profile</button>
+          <button class="bsm" style="background:var(--pur);color:#fff;" onclick="openAIValidate()">🤖 AI Validate</button>
+          <button class="bblu" onclick="showQR()">📲 QR Code</button>
+          <button class="b2sm" onclick="openSubmitSkill()">+ Submit Skill</button>
+          <button class="bgrn" onclick="showPage('wallet')">💳 Wallet</button>
+        </div>`:''}
+      </div>
+      <!-- About -->
+      <div class="psec">
+        <div class="psec-t">📝 About</div>
+        <div style="font-size:12px;color:var(--td);line-height:1.85;">${u.bio||'No bio yet.'+(isOwn?' <a onclick="openEditProfile()" style="color:var(--gld);cursor:pointer;">Add one →</a>':'')}</div>
+      </div>
+      <!-- Skills -->
+      ${PROF_SKILLS.length?`<div class="psec">
+        <div class="psec-t">⚡ Verified Skills</div>
+        <div class="chips" style="margin-bottom:14px;">${(u.skills||[]).map(s=>`<span class="chip v">${s}</span>`).join('')}</div>
+        ${PROF_SKILLS.map((s,i)=>`<div class="skill-r"><span style="font-size:9px;width:110px;flex-shrink:0;">${s}</span><div class="skill-bar"><div class="skill-fill" style="width:${Math.max(55,95-i*7)}%;"></div></div><span style="font-size:8px;color:var(--td);width:26px;text-align:right;">${Math.max(55,95-i*7)}%</span></div>`).join('')}
+      </div>`:''}
+      <!-- Recent Posts -->
+      ${myPosts.length?`<div class="psec">
+        <div class="psec-t">📰 Recent Posts <span style="font-size:9px;font-weight:400;color:var(--td);">(${myPosts.length})</span></div>
+        ${myPosts.slice(0,3).map(p=>`<div style="padding:10px;background:var(--s2);border-radius:6px;border:1px solid var(--br);margin-bottom:7px;font-size:11px;color:var(--td);cursor:pointer;" onclick="showPage('timeline')">${p.content.slice(0,120)}… <span style="color:var(--blu);font-size:9px;">${timeAgo(p.ts)}</span></div>`).join('')}
+        ${isOwn?`<button class="b2sm" style="margin-top:6px;" onclick="showPage('timeline')">View all posts →</button>`:''}
+      </div>`:''}
+      <!-- Endorsements -->
+      <div class="psec">
+        <div class="psec-t">🤝 Peer Endorsements <span style="font-size:9px;font-weight:400;color:var(--td);">(${endorsements.length})</span></div>
+        ${endorsements.length
+          ?endorsements.slice(0,5).map(e=>`<div class="endorse-item">
+            <div class="endorse-top" style="display:flex;align-items:center;gap:8px;margin-bottom:5px;">
+              <div class="endorse-av" style="background:linear-gradient(135deg,${e.fromGrad||'#888'},${e.fromGrad||'#888'}88);">${e.fromAvatar?`<img src="${e.fromAvatar}" style="width:100%;height:100%;object-fit:cover;">`:initials(e.fromName)}</div>
+              <div style="flex:1;"><div style="font-family:'Syne',sans-serif;font-weight:600;font-size:10px;">${e.fromName}</div><div style="font-size:9px;color:var(--td);">endorsed <span style="color:var(--gld);">${e.skill}</span> · ${'★'.repeat(e.stars)} · ${timeAgo(e.created)}</div></div>
+            </div>
+            <div style="font-size:11px;color:var(--td);font-style:italic;">"${e.comment}"</div>
+          </div>`).join('')
+          :`<div style="font-size:11px;color:var(--td);">No endorsements yet.${!isOwn?` <a onclick="openEndorse('${u.uid}')" style="color:var(--gld);cursor:pointer;">Endorse →</a>`:''}</div>`}
+        ${!isOwn?`<button class="bgrn" style="margin-top:10px;" onclick="openEndorse('${u.uid}')">🤝 Endorse ${u.name.split(' ')[0]}</button>`:''}
+      </div>
+    </div>
+    <!-- Sidebar -->
+    <div class="psidebar">
+      ${u.role==='freelancer'?`<div class="pkg-card">
+        <div class="pkg-tabs">
+          <button class="ptab active" onclick="renderPkgInto('basic','${isOwn?'my':'view'}pkg-body');document.querySelectorAll('.ptab').forEach(t=>t.classList.remove('active'));this.classList.add('active')">Basic</button>
+          <button class="ptab" onclick="renderPkgInto('standard','${isOwn?'my':'view'}pkg-body');document.querySelectorAll('.ptab').forEach(t=>t.classList.remove('active'));this.classList.add('active')">Standard</button>
+          <button class="ptab" onclick="renderPkgInto('premium','${isOwn?'my':'view'}pkg-body');document.querySelectorAll('.ptab').forEach(t=>t.classList.remove('active'));this.classList.add('active')">Premium</button>
+        </div>
+        <div class="pkg-body" id="${isOwn?'my':'view'}pkg-body"></div>
+      </div>`:''}
+      <div class="scard">
+        <div class="scard-t">🔐 SkillID Details</div>
+        <div class="irow"><span class="ilbl">SkillID</span><span class="ival" style="color:var(--gld);font-size:9px;">${u.skillId}</span></div>
+        <div class="irow"><span class="ilbl">Badge</span><span>${badgeHTML(u.badgeStatus)}</span></div>
+        <div class="irow"><span class="ilbl">Rep Points</span><span class="ival" style="color:var(--pur);">${u.repPoints||0} pts</span></div>
+        <div class="irow"><span class="ilbl">Category</span><span class="ival">${CAT_ICONS[u.category]||''} ${u.category||'—'}</span></div>
+        <div class="irow"><span class="ilbl">Country</span><span class="ival">${flag(u.country)} ${u.country}</span></div>
+        <div class="irow"><span class="ilbl">Endorsements</span><span class="ival">${endorsements.length}</span></div>
+      </div>
+      ${isOwn?`<div class="scard">
+        <div class="scard-t">💳 Wallet Summary</div>
+        <div class="irow"><span class="ilbl">Balance</span><span class="ival" style="color:var(--grn);">$${(u.wallet?.balance||0).toLocaleString()}</span></div>
+        <div class="irow"><span class="ilbl">Total Earned</span><span class="ival">$${(u.wallet?.earned||u.earned||0).toLocaleString()}</span></div>
+        <button class="bgrn" style="width:100%;margin-top:8px;" onclick="showPage('wallet')">View Full Wallet →</button>
+      </div>`:''}
+      ${!isOwn?`
+        <button class="btn" style="width:100%;margin-bottom:8px;" onclick="openMsg('${u.uid}')">💬 Message</button>
+        <button class="bgrn" style="width:100%;margin-bottom:8px;" onclick="openEndorse('${u.uid}')">🤝 Endorse</button>
+        <button class="b2sm" style="width:100%;" onclick="toast('Proposal sent! 📋','ok')">📋 Send Proposal</button>
+      `:''}
+    </div>
+  </div>`;
+}
+
+const PKGS={
+  basic:{title:'Starter Build',price:'$500',delivery:'5 days',revisions:'2',desc:'Small features, bug fixes, landing pages.',features:[{t:'Up to 5 pages',ok:true},{t:'Responsive design',ok:true},{t:'Basic API',ok:true},{t:'Unit tests',ok:false},{t:'CI/CD',ok:false}]},
+  standard:{title:'Professional',price:'$1,500',delivery:'14 days',revisions:'Unlimited',desc:'Full-featured app with testing & 30-day support.',features:[{t:'Up to 20 pages',ok:true},{t:'Responsive',ok:true},{t:'Full API',ok:true},{t:'All tests',ok:true},{t:'CI/CD',ok:true}]},
+  premium:{title:'Enterprise',price:'$4,500',delivery:'30 days',revisions:'Unlimited',desc:'End-to-end solution with 90-day SLA.',features:[{t:'Unlimited pages',ok:true},{t:'Responsive + mobile',ok:true},{t:'Full APIs',ok:true},{t:'All test suites',ok:true},{t:'90-day support',ok:true}]}
+};
+
+window.renderPkgInto=function(key,bodyId){
+  const el=document.getElementById(bodyId);if(!el)return;const p=PKGS[key];
+  el.innerHTML=`<div style="font-family:'Syne',sans-serif;font-weight:700;font-size:13px;margin-bottom:3px;">${p.title}</div>
+    <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:22px;color:var(--gld);margin-bottom:7px;">${p.price}</div>
+    <div style="font-size:10px;color:var(--td);line-height:1.7;margin-bottom:11px;">${p.desc}</div>
+    <div style="display:flex;gap:12px;margin-bottom:12px;">
+      <div style="font-size:9px;color:var(--td);text-align:center;"><span style="font-family:'Syne',sans-serif;font-weight:700;font-size:11px;color:var(--tx);display:block;margin-bottom:1px;">⏱ ${p.delivery}</span>Delivery</div>
+      <div style="font-size:9px;color:var(--td);text-align:center;"><span style="font-family:'Syne',sans-serif;font-weight:700;font-size:11px;color:var(--tx);display:block;margin-bottom:1px;">🔄 ${p.revisions}</span>Revisions</div>
+    </div>
+    <ul style="list-style:none;margin-bottom:14px;">${p.features.map(f=>`<li style="display:flex;align-items:center;gap:6px;font-size:10px;padding:4px 0;border-bottom:1px solid rgba(255,255,255,.03);"><span style="color:${f.ok?'var(--grn)':'var(--td)'}">${f.ok?'✓':'✕'}</span>${f.t}</li>`).join('')}</ul>
+    <button class="btn" style="margin-bottom:6px;">Continue (${p.price}) →</button>
+    <button class="btn2" style="font-size:10px;padding:8px;">💬 Contact First</button>`;
+};
+
+// ── PHOTO UPLOAD ──
+window.openChangePhoto=function(){
+  setModal(`<button class="mclose" onclick="closeModal()">✕</button>
+    <h3>📸 Profile Photo</h3><p>Upload a photo to personalise your SkillID profile.</p>
+    <div style="border:2px dashed var(--br);border-radius:var(--r);padding:24px;text-align:center;margin-bottom:14px;cursor:pointer;" onclick="document.getElementById('photo-input').click()">
+      <div style="font-size:28px;margin-bottom:8px;">📷</div>
+      <div style="font-size:12px;color:var(--td);">Click to upload a photo</div>
+      <div style="font-size:10px;color:var(--td);margin-top:4px;">JPG, PNG — max 2MB</div>
+    </div>
+    <input type="file" id="photo-input" accept="image/*" style="display:none;" onchange="handlePhotoUpload(this)">
+    ${ME.avatar?`<div style="text-align:center;margin-bottom:12px;"><img src="${ME.avatar}" style="width:80px;height:80px;border-radius:50%;object-fit:cover;border:3px solid var(--gld);"><div style="font-size:10px;color:var(--td);margin-top:6px;">Current photo</div></div>
+    <button class="bacc" style="width:100%;" onclick="removePhoto()">Remove Photo</button>`:''}
+  `);
+};
+
+window.handlePhotoUpload=function(input){
+  const file=input.files[0];if(!file)return;
+  if(file.size>2*1024*1024){toast('Photo must be under 2MB.','bad');return;}
+  const reader=new FileReader();
+  reader.onload=function(e){
+    ME.avatar=e.target.result;saveUser(ME);
+    const navAv=document.getElementById('nav-av');
+    navAv.innerHTML=`<img src="${ME.avatar}" style="width:100%;height:100%;object-fit:cover;">`;
+    closeModal();toast('Profile photo updated! 📸');
+    if(document.getElementById('page-myprofile').classList.contains('active'))renderMyProfile();
+  };
+  reader.readAsDataURL(file);
+};
+
+window.removePhoto=function(){
+  ME.avatar=null;saveUser(ME);
+  const navAv=document.getElementById('nav-av');
+  navAv.innerHTML=initials(ME.name);navAv.style.background=`linear-gradient(135deg,${ME.gradient},${ME.gradient}88)`;
+  closeModal();toast('Photo removed.');
+  if(document.getElementById('page-myprofile').classList.contains('active'))renderMyProfile();
+};
+
+// ── EDIT PROFILE ──
+const ALL_SKILLS=['Python','Data Science','UI/UX Design','React','Cloud Engineering','Product Management','Node.js','SQL','Mobile Dev','DevOps','Machine Learning','Figma','AWS','Docker','TypeScript','Flutter','Django','Next.js','Vue.js','FastAPI','Go','Rust','Solidity','Web3.js','DeFi','Smart Contracts','SEO','Content Strategy','Email Marketing','Google Ads','Analytics'];
+
+window.openEditProfile=function(){
+  setModal(`<button class="mclose" onclick="closeModal()">✕</button>
+    <h3>Edit Profile</h3><p>Update your public SkillID profile</p>
+    <div class="fg"><label class="fl">Professional Title</label><input class="fi" id="ep-t" value="${ME.title||''}" placeholder="e.g. Senior Full-Stack Engineer"></div>
+    <div class="fg"><label class="fl">Bio</label><textarea class="fi" id="ep-b" rows="4" style="resize:vertical;">${ME.bio||''}</textarea></div>
+    <div class="fg"><label class="fl">Category</label>
+      <select class="fi" id="ep-cat">${CATEGORIES.map(c=>`<option ${ME.category===c?'selected':''}>${c}</option>`).join('')}</select>
+    </div>
+    <div class="fg"><label class="fl">Skills (click to toggle)</label>
+      <div style="display:flex;flex-wrap:wrap;gap:5px;margin-top:4px;max-height:160px;overflow-y:auto;" id="ep-skills">
+        ${ALL_SKILLS.map(s=>`<span style="padding:3px 9px;background:var(--s2);border:1px solid ${(ME.skills||[]).includes(s)?'rgba(232,197,71,.5)':'var(--br)'};border-radius:4px;font-size:10px;color:${(ME.skills||[]).includes(s)?'var(--gld)':'var(--td)'};cursor:pointer;" onclick="this.classList.toggle('on');this.style.borderColor=this.classList.contains('on')?'rgba(232,197,71,.5)':'var(--br)';this.style.color=this.classList.contains('on')?'var(--gld)':'var(--td)';" data-s="${s}" class="${(ME.skills||[]).includes(s)?'on':''}">${s}</span>`).join('')}
+      </div>
+    </div>
+    <button class="btn" onclick="saveProfile()">Save Profile →</button>`);
+};
+
+window.saveProfile=function(){
+  const title=document.getElementById('ep-t').value.trim();
+  const bio=document.getElementById('ep-b').value.trim();
+  const category=document.getElementById('ep-cat').value;
+  const skills=[...document.querySelectorAll('#ep-skills [data-s].on')].map(el=>el.dataset.s);
+  ME.title=title||ME.title;ME.bio=bio;ME.category=category;ME.skills=skills;
+  saveUser(ME);closeModal();toast('Profile updated! ✨');renderMyProfile();
+};
+
+window.openSubmitSkill=function(){
+  setModal(`<button class="mclose" onclick="closeModal()">✕</button>
+    <h3>📋 Submit Skill for Verification</h3><p>Admin reviews and approves within 24hrs. +10 rep pts on approval.</p>
+    <div class="fg"><label class="fl">Skill Name</label><input class="fi" id="ss-s" placeholder="e.g. React, Figma, Solidity"></div>
+    <div class="fg"><label class="fl">Evidence / Proof</label><textarea class="fi" id="ss-e" rows="3" placeholder="Portfolio link, certificate ID, GitHub repo…" style="resize:vertical;"></textarea></div>
+    <button class="btn" onclick="submitSkillReview()">Submit →</button>`);
+};
+
+window.submitSkillReview=function(){
+  const skill=document.getElementById('ss-s').value.trim();
+  const evidence=document.getElementById('ss-e').value.trim();
+  if(!skill){toast('Enter a skill name.','bad');return;}
+  const pending=getPending();
+  pending.push({id:'p'+Date.now(),uid:ME.uid,userName:ME.name,skill,category:ME.category,evidence,submitted:Date.now(),status:'pending'});
+  savePending(pending);closeModal();toast('Submitted for admin review! 📋');
+};
+
+// ── QR CODE ──
+window.showQR=function(){
+  setModal(`<button class="mclose" onclick="closeModal()">✕</button>
+    <div style="text-align:center;">
+      <h3>📲 My SkillID QR Code</h3>
+      <p>Scan to instantly verify ${ME.name}'s skills and identity</p>
+      <div style="display:flex;justify-content:center;margin:18px 0;"><div style="background:white;padding:14px;border-radius:10px;" id="qr-box"></div></div>
+      <div class="chain" style="justify-content:center;margin-bottom:14px;"><div class="cdot"></div><div class="chash">${ME.skillId}</div></div>
+      <div style="font-size:10px;color:var(--td);margin-bottom:14px;">Share on CV, business card, LinkedIn, or conference badge for instant verification.</div>
+      <button class="btn" onclick="navigator.clipboard&&navigator.clipboard.writeText('${ME.skillId}').then(()=>toast('SkillID copied!'))">Copy SkillID</button>
+    </div>`);
+  setTimeout(()=>{try{new QRCode(document.getElementById('qr-box'),{text:`SkillStamp|ID:${ME.skillId}|Name:${ME.name}|Category:${ME.category}`,width:170,height:170,colorDark:'#000',colorLight:'#fff'});}catch(e){document.getElementById('qr-box').innerHTML='<div style="width:170px;height:170px;background:#fff;display:flex;align-items:center;justify-content:center;font-size:10px;color:#000;text-align:center;padding:10px;">'+ME.skillId+'</div>';}},200);
+};
+
+// ══════════════════════════════════════════════
+//  LEADERBOARD
+// ══════════════════════════════════════════════
+function renderLeaderboard(){
+  const users=getAllUsers().filter(u=>u.role==='freelancer').sort((a,b)=>(b.repPoints||0)-(a.repPoints||0));
+  const list=document.getElementById('lb-list');
+  list.innerHTML=users.slice(0,50).map((u,i)=>{
+    const rankIcon=i===0?'🥇':i===1?'🥈':i===2?'🥉':`#${i+1}`;
+    const rankColor=i===0?'var(--gld)':i===1?'#c0c0c0':i===2?'#cd7f32':'var(--td)';
+    return `<div class="lb-row" onclick="viewProfile('${u.uid}')">
+      <div class="lb-rank" style="color:${rankColor};">${rankIcon}</div>
+      ${avHTML(u,42,'50%')}
+      <div style="flex:1;min-width:0;">
+        <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:12px;margin-bottom:2px;">${flag(u.country)} ${u.name}${u.uid===ME.uid?' <span style="font-size:8px;color:var(--gld);">(you)</span>':''}</div>
+        <div style="display:flex;align-items:center;gap:6px;">${badgeHTML(u.badgeStatus)}<span style="font-size:9px;color:var(--td);">${CAT_ICONS[u.category]||''} ${u.category}</span></div>
+      </div>
+      <div style="text-align:center;margin-right:6px;">
+        <div style="font-size:9px;color:var(--td);">${getEndorsements().filter(e=>e.toUid===u.uid).length} endorse</div>
+        <div style="font-size:9px;color:var(--td);">${u.gigsCount||0} gigs</div>
+      </div>
+      <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:15px;color:var(--pur);">${u.repPoints||0}</div>
+    </div>`;
+  }).join('');
+  const myRank=users.findIndex(u=>u.uid===ME.uid);
+  document.getElementById('my-rank-content').innerHTML=`<div style="text-align:center;padding:8px 0;">
+    <div style="font-family:'Syne',sans-serif;font-size:30px;font-weight:800;color:var(--pur);line-height:1;">${ME.repPoints||0}</div>
+    <div style="font-size:9px;color:var(--td);margin-top:3px;">reputation points</div>
+    <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:24px;margin-top:8px;">#${myRank+1}</div>
+    <div style="font-size:9px;color:var(--td);">of ${users.length} freelancers</div>
+    <button class="bgrn" style="margin-top:10px;width:100%;" onclick="openAIValidate()">Earn More Points →</button>
+  </div>`;
+}
+
+// ══════════════════════════════════════════════
+//  DASHBOARD
+// ══════════════════════════════════════════════
+function renderDashboard(){
+  const users=getAllUsers();const gigs=getGigs();const endorse=getEndorsements();
+  const totalPts=users.reduce((a,u)=>a+(u.repPoints||0),0);
+  document.getElementById('d-users').textContent=users.length;
+  document.getElementById('d-gigs').textContent=gigs.length;
+  document.getElementById('d-endorse').textContent=endorse.length;
+  document.getElementById('d-pts').textContent=totalPts.toLocaleString();
+  const freq={};users.forEach(u=>(u.skills||[]).forEach(s=>freq[s]=(freq[s]||0)+1));
+  const top=Object.entries(freq).sort((a,b)=>b[1]-a[1]).slice(0,10);const maxF=top[0]?.[1]||1;
+  document.getElementById('d-skills').innerHTML=top.map(([s,f])=>`<div style="margin-bottom:8px;"><div style="display:flex;justify-content:space-between;font-size:10px;margin-bottom:2px;"><span>${s}</span><span style="color:var(--td);">${f}x</span></div><div style="height:3px;background:var(--br);border-radius:3px;overflow:hidden;"><div style="height:100%;width:${Math.round(f/maxF*100)}%;background:linear-gradient(90deg,var(--gld),var(--acc));border-radius:3px;"></div></div></div>`).join('');
+  const cats={};users.forEach(u=>{if(u.category)cats[u.category]=(cats[u.category]||0)+1;});
+  const catTotal=Object.values(cats).reduce((a,b)=>a+b,0)||1;
+  document.getElementById('d-cats').innerHTML=Object.entries(cats).map(([c,n])=>`<div style="display:flex;align-items:center;gap:9px;margin-bottom:8px;"><span style="font-size:12px;">${CAT_ICONS[c]||'🌐'}</span><div style="flex:1;"><div style="display:flex;justify-content:space-between;font-size:10px;margin-bottom:2px;"><span>${c}</span><span style="color:var(--td);">${n}</span></div><div style="height:3px;background:var(--br);border-radius:3px;overflow:hidden;"><div style="height:100%;width:${Math.round(n/catTotal*100)}%;background:var(--pur);border-radius:3px;"></div></div></div></div>`).join('');
+}
+
+// ══════════════════════════════════════════════
+//  ADMIN
+// ══════════════════════════════════════════════
+function renderAdmin(){
+  if(!ME.isAdmin){document.getElementById('page-admin').innerHTML='<div class="empty">Access denied.</div>';return;}
+  const pending=getPending().filter(p=>p.status==='pending');
+  const users=getAllUsers();
+  document.getElementById('admin-user-count').textContent=`${users.length} total`;
+  document.getElementById('admin-pending').innerHTML=pending.length
+    ?pending.map(p=>`<div class="admin-row">${avHTML(getUser(p.uid)||{name:p.userName,gradient:'#888'},38,'50%')}<div style="flex:1;min-width:0;"><div style="font-family:'Syne',sans-serif;font-weight:600;font-size:11px;">${p.userName} — <span style="color:var(--gld);">${p.skill}</span></div><div style="font-size:9px;color:var(--td);">${p.category} · ${timeAgo(p.submitted)} · ${p.evidence}</div></div>
+      <div class="admin-actions"><button class="bgrn" onclick="adminApprove('${p.id}')">✓ Approve</button><button class="bacc" onclick="adminReject('${p.id}')">✕ Reject</button></div></div>`).join('')
+    :'<div class="empty" style="padding:20px;">No pending submissions 🎉</div>';
+  document.getElementById('admin-users').innerHTML=users.slice(0,50).map(u=>`<div class="admin-row">
+    ${avHTML(u,36,'50%')}
+    <div style="flex:1;min-width:0;"><div style="font-family:'Syne',sans-serif;font-weight:600;font-size:11px;">${u.name}${u.isAdmin?' <span style="color:var(--acc);font-size:8px;">[ADMIN]</span>':''}</div><div style="font-size:9px;color:var(--td);">${u.skillId} · ${u.role} · ${u.repPoints||0} pts</div></div>
+    <div>${badgeHTML(u.badgeStatus)}</div>
+    <div class="admin-actions">
+      <select style="background:var(--s2);border:1px solid var(--br);color:var(--tx);font-family:'DM Mono',monospace;font-size:9px;padding:4px;border-radius:4px;" onchange="adminSetBadge('${u.uid}',this.value)">
+        ${['beginner','review','verified','expert','suspended'].map(b=>`<option ${u.badgeStatus===b?'selected':''}>${b}</option>`).join('')}
+      </select>
+      <button class="b2sm" onclick="adminAdjRep('${u.uid}')">± Rep</button>
+    </div>
+  </div>`).join('');
+}
+
+window.adminApprove=function(pid){
+  const pending=getPending();const p=pending.find(x=>x.id===pid);if(!p)return;
+  p.status='approved';savePending(pending);
+  const u=getUser(p.uid);
+  if(u){if(!u.skills.includes(p.skill))u.skills.push(p.skill);u.repPoints=(u.repPoints||0)+10;if(u.badgeStatus==='beginner')u.badgeStatus='review';saveUser(u);if(u.uid===ME.uid)ME=u;}
+  toast(`✅ "${p.skill}" approved! +10 pts`);renderAdmin();
+};
+
+window.adminReject=function(pid){
+  const pending=getPending();const p=pending.find(x=>x.id===pid);if(!p)return;
+  p.status='rejected';
+  const u=getUser(p.uid);if(u){u.repPoints=Math.max(0,(u.repPoints||0)-10);saveUser(u);}
+  savePending(pending);toast(`❌ Rejected. -10 pts.`,'bad');renderAdmin();
+};
+
+window.adminSetBadge=function(uid,badge){
+  const u=getUser(uid);if(!u)return;u.badgeStatus=badge;saveUser(u);if(u.uid===ME.uid)ME=u;toast(`Badge → "${badge}" for ${u.name}`);
+};
+
+window.adminAdjRep=function(uid){
+  const u=getUser(uid);if(!u)return;
+  const amt=parseInt(prompt(`Adjust rep for ${u.name} (current: ${u.repPoints||0})\nEnter amount (e.g. +20 or -10):`)||'0');
+  if(!amt||isNaN(amt))return;
+  u.repPoints=Math.max(0,(u.repPoints||0)+amt);saveUser(u);if(u.uid===ME.uid)ME=u;
+  toast(`Rep adjusted ${amt>0?'+':''}${amt} for ${u.name}`);renderAdmin();
+};
+
+// ══════════════════════════════════════════════
+//  NOTIFICATIONS
+// ══════════════════════════════════════════════
+window.toggleNotifs=function(){
+  const panel=document.getElementById('notif-panel');
+  const notifs=getNotifs();
+  panel.innerHTML=`<div style="padding:11px 13px;border-bottom:1px solid var(--br);font-family:'Syne',sans-serif;font-weight:700;font-size:12px;display:flex;justify-content:space-between;align-items:center;">Notifications<button onclick="clearNotifs()" style="background:none;border:none;color:var(--td);font-size:10px;cursor:pointer;">Clear all</button></div>
+    <div id="notif-list">${notifs.length?notifs.map(n=>`<div class="notif-item${n.read?'':' unread'}"><div class="notif-dot" style="opacity:${n.read?.4:1};"></div><div style="flex:1;"><div style="margin-bottom:2px;">${n.icon} ${n.msg}</div><div style="font-size:9px;color:var(--td);">${timeAgo(n.ts)}</div></div></div>`).join(''):'<div class="empty" style="padding:20px;">No notifications yet</div>'}</div>`;
+  panel.classList.toggle('show');
+  if(panel.classList.contains('show')){const n=getNotifs().map(x=>({...x,read:true}));saveNotifs(n);updateNotifBadge();}
+};
+
+window.clearNotifs=function(){saveNotifs([]);updateNotifBadge();document.getElementById('notif-panel').classList.remove('show');toast('Notifications cleared.');};
+</script>
+</body>
+</html>
